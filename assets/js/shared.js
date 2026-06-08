@@ -128,8 +128,8 @@ function loadFooter() {
                     <i class="fa-solid fa-shield-halved text-2xl text-slate-600 mb-2"></i>
                     <h3 class="text-lg font-bold text-slate-200 tracking-wider">TargetCDS</h3>
                 </div>
-                <p class="text-sm">An Interactive Platform for Defence Aspirants</p>
-                <p class="text-xs mt-2 opacity-60">&copy; 2026 DefendTech Preparation. All rights reserved.</p>
+                <p class="text-sm">An Interactive Platform for Defence Aspirants By Farmesh Thakur</p>
+                <p class="text-xs mt-2 opacity-60">&copy; 2026 CDS Preparation. All rights reserved.</p>
                 <div class="mt-4 flex justify-center space-x-4">
                     <a href="#" class="text-slate-400 hover:text-white transition"><i class="fa-brands fa-twitter"></i></a>
                     <a href="#" class="text-slate-400 hover:text-white transition"><i class="fa-brands fa-facebook"></i></a>
