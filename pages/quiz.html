@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Tests | TargetCDS</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        defblue: {
+                            600: 'var(--defblue-600)',
+                            700: 'var(--defblue-800)',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .option-label {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option-label input[type="radio"]:checked + div {
+            font-weight: 700;
+        }
+
+        .radio-custom {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--slate-300);
+            border-radius: 50%;
+            width: 1.5rem;
+            height: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .radio-custom.checked {
+            border-color: var(--defblue-600);
+            background-color: var(--defblue-50);
+        }
+
+        .radio-custom.checked::after {
+            content: '';
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            background-color: var(--defblue-600);
+        }
+
+        .timer {
+            font-family: 'Courier New', monospace;
+        }
+
+        .score-circle {
+            animation: fillCircle 2s ease forwards;
+        }
+
+        @keyframes fillCircle {
+            0% { stroke-dashoffset: 552.9; }
+            100% { stroke-dashoffset: var(--offset); }
+        }
+    </style>
+</head>
+<body class="text-slate-800 bg-slate-50">
+    <main class="flex-grow py-10 min-h-screen">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Setup Screen -->
+            <div id="quiz-setup" class="bg-white rounded-2xl shadow-md border border-slate-200 p-8 text-center">
+                <i class="fa-solid fa-stopwatch text-6xl mb-4" style="color: var(--defblue-600);"></i>
+                <h1 class="text-4xl font-bold text-slate-800 mb-2">Smart Mock Test Engine</h1>
+                <p class="text-slate-600 mb-8 max-w-lg mx-auto text-lg">
+                    Experience real CDS exam conditions with exact UPSC marking schemes: <strong>+1 mark</strong> for correct, <strong>-0.33 marks</strong> for incorrect answers.
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-8 text-left mb-8 bg-slate-50 p-8 rounded-xl">
+                    <div>
+                        <label class="block font-bold text-lg mb-4 text-slate-800"><i class="fa-solid fa-book mr-2"></i>1. Select Subject</label>
+                        <select id="quiz-subject" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:outline-none" style="border-color: var(--slate-300); --tw-ring-color: var(--defblue-600);">
+                            <option value="gk">General Knowledge (Static & Current)</option>
+                            <option value="eng">English (Grammar & Vocabulary)</option>
+                            <option value="math">Elementary Mathematics</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-lg mb-4 text-slate-800"><i class="fa-solid fa-circle-play mr-2"></i>2. Select Mode</label>
+                        <div class="space-y-3">
+                            <label class="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-white transition">
+                                <input type="radio" name="quiz-mode" value="practice" checked class="w-5 h-5" style="accent-color: var(--defblue-600);">
+                                <div>
+                                    <span class="block font-semibold text-slate-800">Practice Mode</span>
+                                    <span class="text-xs text-slate-500">Get instant answers & explanations after each question.</span>
+                                </div>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-white transition">
+                                <input type="radio" name="quiz-mode" value="exam" class="w-5 h-5" style="accent-color: var(--defblue-600);">
+                                <div>
+                                    <span class="block font-semibold text-slate-800">Exam Mode</span>
+                                    <span class="text-xs text-slate-500">Timed (120 mins), strict marking, final scorecard only.</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <button onclick="startQuiz()" class="bg-gradient-to-r from-defblue-600 to-defblue-700 hover:from-defblue-700 hover:to-defblue-800 text-white font-bold py-4 px-12 rounded-full shadow-lg transition transform hover:-translate-y-1 text-lg" style="background: linear-gradient(135deg, var(--defblue-600) 0%, var(--defblue-800) 100%);">
+                    <i class="fa-solid fa-play mr-2"></i>Start Test
+                </button>
+            </div>
+
+            <!-- Active Quiz Screen -->
+            <div id="quiz-active" class="hidden">
+                <!-- Header -->
+                <div class="bg-white rounded-t-2xl border border-slate-200 border-b-0 p-4 flex justify-between items-center shadow-sm">
+                    <div class="font-semibold text-slate-600">
+                        Question <span id="q-current" class="text-lg font-bold" style="color: var(--defblue-600);">1</span> of <span id="q-total" class="font-bold text-slate-800">10</span>
+                    </div>
+                    <div id="timer-display" class="hidden text-red-700 px-4 py-2 rounded-lg font-mono font-bold border border-red-100 timer" style="background-color: #fef2f2; border-color: #fee2e2;">
+                        <i class="fa-regular fa-clock mr-2"></i><span id="time-left">120:00</span>
+                    </div>
+                    <button onclick="quitQuiz()" class="text-slate-400 hover:text-red-500 font-semibold transition text-sm">
+                        <i class="fa-solid fa-xmark mr-1"></i>Quit
+                    </button>
+                </div>
+                
+                <!-- Question Area -->
+                <div class="bg-slate-50 rounded-b-2xl border border-slate-200 shadow-md p-6 md:p-10">
+                    <h3 id="question-text" class="text-xl md:text-2xl font-semibold text-slate-800 mb-8 leading-relaxed">
+                        <!-- Question injected here -->
+                    </h3>
+                    
+                    <!-- Options -->
+                    <div id="options-container" class="space-y-3 mb-8">
+                        <!-- Options injected here -->
+                    </div>
+
+                    <!-- Feedback Area (Practice Mode Only) -->
+                    <div id="feedback-area" class="hidden mb-6 p-4 rounded-lg border-l-4">
+                        <p id="feedback-msg" class="font-bold mb-2"></p>
+                        <p id="feedback-explanation" class="text-sm text-slate-700"></p>
+                    </div>
+                    
+                    <!-- Navigation -->
+                    <div class="flex justify-between border-t border-slate-200 pt-6">
+                        <button id="btn-skip" onclick="skipQuestion()" class="px-6 py-2 border border-slate-300 text-slate-600 rounded-lg hover:bg-slate-100 transition font-medium">
+                            <i class="fa-solid fa-forward mr-1"></i>Skip
+                        </button>
+                        <button id="btn-next" onclick="nextQuestion()" class="px-6 py-2 text-white rounded-lg hover:opacity-90 transition font-medium shadow-sm" style="background-color: var(--defblue-600);">
+                            <i class="fa-solid fa-arrow-right mr-1"></i>Next Question
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div id="quiz-results" class="hidden bg-white rounded-2xl shadow-lg border border-slate-200 p-8 text-center fade-in">
+                <h1 class="text-3xl font-bold text-slate-800 mb-6">Exam Scorecard</h1>
+                
+                <!-- Score Circle -->
+                <div class="flex justify-center mb-8">
+                    <div class="w-48 h-48 rounded-full border-8 border-slate-100 flex flex-col items-center justify-center relative shadow-inner" style="background: linear-gradient(135deg, rgba(30, 58, 138, 0.05), transparent);">
+                        <svg class="absolute inset-0 w-full h-full transform -rotate-90">
+                            <circle id="score-circle" cx="96" cy="96" r="88" stroke="currentColor" stroke-width="8" fill="transparent" class="score-circle" style="color: var(--defblue-600); stroke-dasharray: 552.9; stroke-dashoffset: 552.9; transition: stroke-dashoffset 1.5s ease;"></circle>
+                        </svg>
+                        <div class="z-10 text-center">
+                            <span class="text-4xl font-bold text-slate-800" id="final-score-val">0</span>
+                            <span class="text-xs text-slate-500 uppercase font-semibold block mt-1">out of 15</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Statistics -->
+                <div class="grid grid-cols-3 gap-4 mb-8 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <div class="border-r border-slate-200">
+                        <p class="text-sm text-slate-500 mb-1"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i> Correct</p>
+                        <p id="res-correct" class="text-2xl font-bold" style="color: #10b981;">0</p>
+                    </div>
+                    <div class="border-r border-slate-200">
+                        <p class="text-sm text-slate-500 mb-1"><i class="fa-solid fa-circle-xmark" style="color: #ef4444;"></i> Incorrect</p>
+                        <p id="res-wrong" class="text-2xl font-bold" style="color: #ef4444;">0 (-0.33 each)</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-slate-500 mb-1"><i class="fa-solid fa-hourglass-end" style="color: #64748b;"></i> Skipped</p>
+                        <p id="res-skipped" class="text-2xl font-bold text-slate-600">0</p>
+                    </div>
+                </div>
+
+                <!-- Performance Analysis -->
+                <div id="performance-analysis" class="mb-8 text-left bg-blue-50 border border-blue-200 p-6 rounded-xl">
+                    <h3 class="font-bold text-slate-800 mb-3"><i class="fa-solid fa-chart-line mr-2" style="color: var(--defblue-600);"></i>Performance Analysis</h3>
+                    <div id="analysis-content" class="text-sm text-slate-700">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button onclick="retakeQuiz()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-8 rounded-lg transition">
+                        <i class="fa-solid fa-redo mr-2"></i>Retake Quiz
+                    </button>
+                    <button onclick="backToDashboard()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-3 px-8 rounded-lg transition">
+                        <i class="fa-solid fa-home mr-2"></i>Back to Dashboard
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Shared Scripts -->
+    <script src="../assets/js/questions.js"></script>
+    <script src="../assets/js/shared.js"></script>
+    
+    <script>
+        // ==========================================
+        // QUIZ PAGE LOGIC
+        // ==========================================
+
+        let currentQuiz = [];
+        let currentQIndex = 0;
+        let quizScore = { correct: 0, wrong: 0, skipped: 0 };
+        let isExamMode = false;
+        let timerInterval;
+        let quizAnswers = [];
+
+        function startQuiz() {
+            const subject = document.getElementById('quiz-subject').value;
+            const modeInput = document.querySelector('input[name="quiz-mode"]:checked');
+            
+            // Validate mode selection
+            if (!modeInput) {
+                showNotification('Please select a quiz mode', 'warning');
+                return;
+            }
+            
+            isExamMode = modeInput.value === 'exam';
+            
+            // Validate subject selection
+            if (!quizDatabase[subject] || quizDatabase[subject].length === 0) {
+                showNotification('Invalid subject selected. Please refresh and try again.', 'error');
+                return;
+            }
+            
+            currentQuiz = [...quizDatabase[subject]];
+            currentQIndex = 0;
+            quizScore = { correct: 0, wrong: 0, skipped: 0 };
+            quizAnswers = new Array(currentQuiz.length).fill(null);
+            
+            document.getElementById('quiz-setup').classList.add('hidden');
+            document.getElementById('quiz-active').classList.remove('hidden');
+            document.getElementById('q-total').innerText = currentQuiz.length;
+
+            if (isExamMode) {
+                startTimer(120);
+            }
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const qData = currentQuiz[currentQIndex];
+            document.getElementById('q-current').innerText = currentQIndex + 1;
+            document.getElementById('question-text').innerText = qData.q;
+            
+            const optContainer = document.getElementById('options-container');
+            optContainer.innerHTML = '';
+            
+            qData.options.forEach((opt, idx) => {
+                optContainer.innerHTML += `
+                    <label class="option-label block p-4 border border-slate-200 rounded-lg hover:bg-blue-50 cursor-pointer transition">
+                        <input type="radio" name="q-option" value="${idx}" class="sr-only" ${quizAnswers[currentQIndex] === idx ? 'checked' : ''} onchange="selectOption(${idx})">
+                        <div class="flex items-center space-x-3">
+                            <div class="radio-custom ${quizAnswers[currentQIndex] === idx ? 'checked' : ''}" style="border-color: var(--slate-300); background-color: transparent;">
+                                ${quizAnswers[currentQIndex] === idx ? `<div style="width: 0.5rem; height: 0.5rem; border-radius: 50%; background-color: var(--defblue-600);"></div>` : ''}
+                            </div>
+                            <span class="font-medium text-slate-700">${opt}</span>
+                        </div>
+                    </label>
+                `;
+            });
+
+            // Reset UI
+            const feedback = document.getElementById('feedback-area');
+            feedback.classList.add('hidden');
+            document.getElementById('btn-next').innerText = (currentQIndex === currentQuiz.length - 1) ? "Submit Test" : "Next Question";
+
+            // Show timer only in exam mode
+            if (isExamMode) {
+                document.getElementById('timer-display').classList.remove('hidden');
+            } else {
+                document.getElementById('timer-display').classList.add('hidden');
+            }
+        }
+
+        function selectOption(idx) {
+            quizAnswers[currentQIndex] = idx;
+            
+            // Visual feedback
+            const options = document.querySelectorAll('.option-label');
+            options.forEach((opt, i) => {
+                if (i === idx) {
+                    opt.style.borderColor = 'var(--defblue-600)';
+                    opt.style.backgroundColor = 'var(--defblue-50)';
+                    opt.querySelector('.radio-custom').classList.add('checked');
+                } else {
+                    opt.style.borderColor = 'var(--slate-200)';
+                    opt.style.backgroundColor = 'transparent';
+                    opt.querySelector('.radio-custom').classList.remove('checked');
+                }
+            });
+
+            // In practice mode, show answer immediately
+            if (!isExamMode) {
+                setTimeout(() => showFeedback(idx), 300);
+            }
+        }
+
+        function showFeedback(selectedIdx) {
+            const qData = currentQuiz[currentQIndex];
+            const isCorrect = selectedIdx === qData.correct;
+            
+            const feedback = document.getElementById('feedback-area');
+            const fbMsg = document.getElementById('feedback-msg');
+            const fbExp = document.getElementById('feedback-explanation');
+            
+            feedback.classList.remove('hidden', 'border-l-red-500', 'bg-red-50', 'border-l-green-500', 'bg-green-50');
+            
+            if (isCorrect) {
+                quizScore.correct++;
+                feedback.style.borderLeftColor = '#10b981';
+                feedback.style.backgroundColor = '#f0fdf4';
+                fbMsg.innerHTML = '<i class="fa-solid fa-circle-check" style="color: #10b981;"></i> Correct Answer!';
+                fbMsg.style.color = '#10b981';
+            } else {
+                quizScore.wrong++;
+                feedback.style.borderLeftColor = '#ef4444';
+                feedback.style.backgroundColor = '#fef2f2';
+                fbMsg.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color: #ef4444;"></i> Incorrect! Correct answer: <strong>${qData.options[qData.correct]}</strong>`;
+                fbMsg.style.color = '#ef4444';
+            }
+            
+            fbExp.innerText = qData.exp;
+        }
+
+        function nextQuestion() {
+            if (quizAnswers[currentQIndex] === null && !isExamMode) {
+                showNotification('Please select an answer or skip the question', 'warning');
+                return;
+            }
+
+            if (isExamMode && quizAnswers[currentQIndex] !== null) {
+                if (quizAnswers[currentQIndex] === currentQuiz[currentQIndex].correct) {
+                    quizScore.correct++;
+                } else {
+                    quizScore.wrong++;
+                }
+            }
+
+            currentQIndex++;
+            if (currentQIndex < currentQuiz.length) {
+                loadQuestion();
+            } else {
+                endQuiz();
+            }
+        }
+
+        function skipQuestion() {
+            quizScore.skipped++;
+            currentQIndex++;
+            if (currentQIndex < currentQuiz.length) {
+                loadQuestion();
+            } else {
+                endQuiz();
+            }
+        }
+
+        function startTimer(minutes) {
+            let seconds = minutes * 60;
+            document.getElementById('timer-display').classList.remove('hidden');
+            
+            timerInterval = setInterval(() => {
+                seconds--;
+                if (seconds <= 0) {
+                    clearInterval(timerInterval);
+                    endQuiz();
+                    return;
+                }
+                const m = Math.floor(seconds / 60);
+                const s = seconds % 60;
+                document.getElementById('time-left').innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                
+                // Red warning at 5 minutes
+                if (seconds <= 300) {
+                    document.getElementById('timer-display').style.backgroundColor = '#fecaca';
+                }
+            }, 1000);
+        }
+
+        function endQuiz() {
+            clearInterval(timerInterval);
+            document.getElementById('quiz-active').classList.add('hidden');
+            document.getElementById('quiz-results').classList.remove('hidden');
+            
+            // Calculate score
+            const totalMarks = Math.max(0, (quizScore.correct * 1) - (quizScore.wrong * 0.33));
+            const totalPossible = currentQuiz.length;
+            const percentage = Math.round((totalMarks / totalPossible) * 100);
+
+            // Display results
+            document.getElementById('res-correct').innerText = quizScore.correct;
+            document.getElementById('res-wrong').innerText = quizScore.wrong;
+            document.getElementById('res-skipped').innerText = quizScore.skipped;
+            document.getElementById('final-score-val').innerText = totalMarks.toFixed(2);
+
+            // Animate circle
+            const circle = document.getElementById('score-circle');
+            const circumference = 2 * Math.PI * 88;
+            const offset = circumference - ((totalMarks / totalPossible) * circumference);
+            circle.style.setProperty('--offset', offset + 'px');
+            
+            // Color based on performance
+            if (percentage >= 70) {
+                circle.style.color = '#10b981';
+            } else if (percentage >= 50) {
+                circle.style.color = '#f59e0b';
+            } else {
+                circle.style.color = '#ef4444';
+            }
+
+            // Performance analysis
+            const analysisHTML = `
+                <ul style="list-style: none; padding: 0;">
+                    <li class="mb-2"><strong>Total Questions:</strong> ${currentQuiz.length}</li>
+                    <li class="mb-2"><strong>Accuracy:</strong> ${((quizScore.correct / currentQuiz.length) * 100).toFixed(1)}%</li>
+                    <li class="mb-2"><strong>Marks Obtained:</strong> ${totalMarks.toFixed(2)} / ${totalPossible}</li>
+                    <li class="mb-2"><strong>Percentile:</strong> ${percentage}%</li>
+                    <li class="mb-2"><strong>Status:</strong> <strong style="${percentage >= 70 ? 'color: #10b981;' : percentage >= 50 ? 'color: #f59e0b;' : 'color: #ef4444;'}">${percentage >= 70 ? 'Excellent' : percentage >= 50 ? 'Good' : 'Needs Improvement'}</strong></li>
+                </ul>
+            `;
+            document.getElementById('analysis-content').innerHTML = analysisHTML;
+
+            // Save to history
+            Storage.addQuizResult({
+                subject: document.getElementById('quiz-subject').value,
+                mode: isExamMode ? 'Exam' : 'Practice',
+                score: totalMarks.toFixed(2),
+                total: totalPossible,
+                correct: quizScore.correct,
+                wrong: quizScore.wrong,
+                skipped: quizScore.skipped
+            });
+        }
+
+        function quitQuiz() {
+            if (confirm('Are you sure you want to quit? Your progress will not be saved.')) {
+                clearInterval(timerInterval);
+                resetQuizView();
+            }
+        }
+
+        function retakeQuiz() {
+            resetQuizView();
+            startQuiz();
+        }
+
+        function backToDashboard() {
+            resetQuizView();
+        }
+
+        function resetQuizView() {
+            document.getElementById('quiz-results').classList.add('hidden');
+            document.getElementById('quiz-active').classList.add('hidden');
+            document.getElementById('quiz-setup').classList.remove('hidden');
+            
+            currentQIndex = 0;
+            quizScore = { correct: 0, wrong: 0, skipped: 0 };
+            quizAnswers = [];
+        }
+    </script>
+</body>
+</html>

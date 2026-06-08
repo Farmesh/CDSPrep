@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DefendTech | CDS Prep</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        defblue: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            600: '#2563eb',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        },
+                        defolive: {
+                            100: '#ecfccb',
+                            600: '#65a30d',
+                            800: '#3f6212',
+                            900: '#365314',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles for interactions and scrollbars */
+        body {
+            background-color: #f8fafc;
+            overflow-x: hidden;
+        }
+        
+        .view-section {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        
+        .view-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+
+        /* Checkbox styling for Syllabus */
+        .syllabus-checkbox {
+            accent-color: #1e3a8a;
+            width: 1.25rem;
+            height: 1.25rem;
+            cursor: pointer;
+        }
+        
+        /* Glassmorphism for Home hero */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="text-slate-800 flex flex-col min-h-screen">
+
+    <!-- Navigation Bar -->
+    <nav class="bg-defblue-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <i class="fa-solid fa-shield-halved text-2xl text-yellow-400 mr-2"></i>
+                    <span class="font-bold text-xl tracking-wider">TargetCDS</span>
+                </div>
+                
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex items-center space-x-1" id="desktop-nav">
+                    <button data-target="home" class="nav-btn px-4 py-2 rounded-md font-semibold bg-defblue-800 text-white transition hover:bg-defblue-600">Home</button>
+                    <button data-target="syllabus" class="nav-btn px-4 py-2 rounded-md font-semibold text-blue-100 transition hover:bg-defblue-800 hover:text-white">Syllabus</button>
+                    <button data-target="quiz" class="nav-btn px-4 py-2 rounded-md font-semibold text-blue-100 transition hover:bg-defblue-800 hover:text-white">Mock Test</button>
+                    <button data-target="eligibility" class="nav-btn px-4 py-2 rounded-md font-semibold text-blue-100 transition hover:bg-defblue-800 hover:text-white">Eligibility</button>
+                    <button data-target="resources" class="nav-btn px-4 py-2 rounded-md font-semibold text-blue-100 transition hover:bg-defblue-800 hover:text-white">Resources</button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="flex items-center md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-200 hover:text-white focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Nav Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-defblue-800 pb-3 px-2">
+            <button data-target="home" class="nav-btn block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white bg-defblue-900">Home</button>
+            <button data-target="syllabus" class="nav-btn block w-full text-left px-3 py-2 rounded-md text-base font-medium text-blue-100 hover:bg-defblue-700 hover:text-white mt-1">Syllabus Tracker</button>
+            <button data-target="quiz" class="nav-btn block w-full text-left px-3 py-2 rounded-md text-base font-medium text-blue-100 hover:bg-defblue-700 hover:text-white mt-1">Mock Tests</button>
+            <button data-target="eligibility" class="nav-btn block w-full text-left px-3 py-2 rounded-md text-base font-medium text-blue-100 hover:bg-defblue-700 hover:text-white mt-1">Eligibility Calculator</button>
+            <button data-target="resources" class="nav-btn block w-full text-left px-3 py-2 rounded-md text-base font-medium text-blue-100 hover:bg-defblue-700 hover:text-white mt-1">Study Resources</button>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow w-full">
+
+        <!-- ================= HOME VIEW ================= -->
+        <div id="home" class="view-section active">
+            <!-- Hero Section with Countdown -->
+            <div class="relative bg-defblue-900 text-white overflow-hidden">
+                <div class="absolute inset-0 opacity-20 bg-[url('https://placehold.co/1920x1080/1e3a8a/ffffff?text=Military+Texture')] bg-cover bg-center"></div>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 relative z-10 flex flex-col md:flex-row items-center justify-between">
+                    <div class="md:w-1/2 mb-10 md:mb-0">
+                        <h1 class="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">Your Journey to the <span class="text-yellow-400">Armed Forces</span> Starts Here</h1>
+                        <p class="text-lg text-blue-200 mb-8 max-w-lg">Master the CDS syllabus, test your limits, and prepare systematically for IMA, INA, AFA, and OTA.</p>
+                        <div id="quote-container" class="glass-panel p-4 rounded-lg shadow-lg text-slate-800 italic font-medium min-h-[80px] flex items-center">
+                            "Discipline is the soul of an Army."
+                        </div>
+                    </div>
+                    
+                    <div class="md:w-5/12 glass-panel p-6 md:p-8 rounded-2xl shadow-2xl text-center">
+                        <h2 class="text-2xl font-bold text-defblue-900 mb-2">Next CDS Exam Countdown</h2>
+                        <p class="text-sm text-slate-600 mb-6 font-semibold">Target: September 2026</p>
+                        <div class="grid grid-cols-4 gap-2 text-defblue-900">
+                            <div class="bg-blue-50 rounded-lg p-2 md:p-3 border border-blue-100">
+                                <span id="cd-days" class="block text-3xl md:text-4xl font-bold">00</span>
+                                <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Days</span>
+                            </div>
+                            <div class="bg-blue-50 rounded-lg p-2 md:p-3 border border-blue-100">
+                                <span id="cd-hours" class="block text-3xl md:text-4xl font-bold">00</span>
+                                <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Hours</span>
+                            </div>
+                            <div class="bg-blue-50 rounded-lg p-2 md:p-3 border border-blue-100">
+                                <span id="cd-mins" class="block text-3xl md:text-4xl font-bold">00</span>
+                                <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Mins</span>
+                            </div>
+                            <div class="bg-blue-50 rounded-lg p-2 md:p-3 border border-blue-100">
+                                <span id="cd-secs" class="block text-3xl md:text-4xl font-bold">00</span>
+                                <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Secs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aim Selector Section -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-slate-800">Select Your Target Academy</h2>
+                    <p class="mt-2 text-slate-600">Click to see the required exam pattern and recent cut-off trends.</p>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <button onclick="selectAim('ima')" id="btn-ima" class="aim-btn bg-white border-2 border-slate-200 p-4 rounded-xl shadow-sm hover:border-defblue-600 hover:shadow-md transition">
+                        <i class="fa-solid fa-crosshairs text-3xl text-defolive-600 mb-2"></i>
+                        <h3 class="font-bold text-lg">IMA</h3>
+                        <p class="text-xs text-slate-500">Indian Military Academy</p>
+                    </button>
+                    <button onclick="selectAim('ina')" id="btn-ina" class="aim-btn bg-white border-2 border-slate-200 p-4 rounded-xl shadow-sm hover:border-defblue-600 hover:shadow-md transition">
+                        <i class="fa-solid fa-anchor text-3xl text-blue-600 mb-2"></i>
+                        <h3 class="font-bold text-lg">INA</h3>
+                        <p class="text-xs text-slate-500">Indian Naval Academy</p>
+                    </button>
+                    <button onclick="selectAim('afa')" id="btn-afa" class="aim-btn bg-white border-2 border-slate-200 p-4 rounded-xl shadow-sm hover:border-defblue-600 hover:shadow-md transition">
+                        <i class="fa-solid fa-plane text-3xl text-sky-500 mb-2"></i>
+                        <h3 class="font-bold text-lg">AFA</h3>
+                        <p class="text-xs text-slate-500">Air Force Academy</p>
+                    </button>
+                    <button onclick="selectAim('ota')" id="btn-ota" class="aim-btn bg-white border-2 border-slate-200 p-4 rounded-xl shadow-sm hover:border-defblue-600 hover:shadow-md transition">
+                        <i class="fa-solid fa-star text-3xl text-yellow-500 mb-2"></i>
+                        <h3 class="font-bold text-lg">OTA</h3>
+                        <p class="text-xs text-slate-500">Officers Training Academy</p>
+                    </button>
+                </div>
+
+                <div id="aim-info-card" class="bg-white rounded-xl shadow-md border border-slate-200 p-6 hidden">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SYLLABUS VIEW ================= -->
+        <div id="syllabus" class="view-section bg-slate-50 py-10 min-h-screen">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="p-6 md:p-8 border-b border-slate-200 bg-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-800">Interactive Syllabus Tracker</h2>
+                            <p class="text-slate-500 text-sm mt-1">Your progress is automatically saved to this device.</p>
+                        </div>
+                        
+                        <!-- Master Progress Bar -->
+                        <div class="w-full md:w-1/3">
+                            <div class="flex justify-between text-sm font-semibold mb-1">
+                                <span class="text-defblue-800">Overall Progress</span>
+                                <span id="overall-progress-text" class="text-defblue-800">0%</span>
+                            </div>
+                            <div class="w-full bg-slate-200 rounded-full h-2.5">
+                                <div id="overall-progress-bar" class="bg-defblue-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabs -->
+                    <div class="flex border-b border-slate-200">
+                        <button onclick="switchSyllabusTab('gk')" id="tab-gk" class="syllabus-tab flex-1 py-4 font-semibold text-center text-defblue-600 border-b-2 border-defblue-600 bg-blue-50 transition">General Knowledge</button>
+                        <button onclick="switchSyllabusTab('eng')" id="tab-eng" class="syllabus-tab flex-1 py-4 font-semibold text-center text-slate-500 border-b-2 border-transparent hover:text-slate-700 hover:bg-slate-50 transition">English</button>
+                        <button onclick="switchSyllabusTab('math')" id="tab-math" class="syllabus-tab flex-1 py-4 font-semibold text-center text-slate-500 border-b-2 border-transparent hover:text-slate-700 hover:bg-slate-50 transition">Mathematics</button>
+                    </div>
+
+                    <!-- Topics Container (Injected via JS) -->
+                    <div id="syllabus-content" class="p-6">
+                        <!-- JS creates accordions here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= QUIZ VIEW ================= -->
+        <div id="quiz" class="view-section py-10 min-h-screen">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- Setup Screen -->
+                <div id="quiz-setup" class="bg-white rounded-2xl shadow-md border border-slate-200 p-8 text-center active block">
+                    <i class="fa-solid fa-stopwatch text-5xl text-defblue-600 mb-4"></i>
+                    <h2 class="text-3xl font-bold text-slate-800 mb-2">Smart Mock Test Engine</h2>
+                    <p class="text-slate-600 mb-8 max-w-lg mx-auto">Experience real CDS exam pressure with exact UPSC marking schemes (+1 correct, -0.33 incorrect).</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-8 text-left mb-8">
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                            <h3 class="font-bold text-lg mb-4 text-slate-800 border-b pb-2">1. Select Subject</h3>
+                            <select id="quiz-subject" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-defblue-500 focus:outline-none">
+                                <option value="gk">General Knowledge (Static & Current)</option>
+                                <option value="eng">English (Grammar & Vocab)</option>
+                                <option value="math">Elementary Mathematics</option>
+                            </select>
+                        </div>
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                            <h3 class="font-bold text-lg mb-4 text-slate-800 border-b pb-2">2. Select Mode</h3>
+                            <div class="space-y-3">
+                                <label class="flex items-center space-x-3 cursor-pointer">
+                                    <input type="radio" name="quiz-mode" value="practice" checked class="w-5 h-5 text-defblue-600 focus:ring-defblue-500">
+                                    <div>
+                                        <span class="block font-semibold text-slate-800">Practice Mode</span>
+                                        <span class="text-xs text-slate-500">Instant answers and explanations.</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-center space-x-3 cursor-pointer">
+                                    <input type="radio" name="quiz-mode" value="exam" class="w-5 h-5 text-defblue-600 focus:ring-defblue-500">
+                                    <div>
+                                        <span class="block font-semibold text-slate-800">Exam Mode</span>
+                                        <span class="text-xs text-slate-500">Timed, strict marking, scorecard at end.</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="startQuiz()" class="bg-defblue-600 hover:bg-defblue-700 text-white font-bold py-4 px-10 rounded-full shadow-lg transition transform hover:-translate-y-1 text-lg">
+                        Start Test
+                    </button>
+                </div>
+
+                <!-- Active Quiz Screen -->
+                <div id="quiz-active" class="hidden">
+                    <div class="bg-white rounded-t-2xl border border-slate-200 border-b-0 p-4 flex justify-between items-center shadow-sm relative z-10">
+                        <div class="font-semibold text-slate-600">
+                            Question <span id="q-current" class="text-defblue-600 text-lg">1</span> of <span id="q-total">10</span>
+                        </div>
+                        <div id="timer-display" class="hidden bg-red-50 text-red-700 px-4 py-2 rounded-lg font-mono font-bold border border-red-100">
+                            <i class="fa-regular fa-clock mr-2"></i><span id="time-left">120:00</span>
+                        </div>
+                        <button onclick="quitQuiz()" class="text-slate-400 hover:text-red-500 font-semibold transition text-sm">Quit</button>
+                    </div>
+                    
+                    <div class="bg-slate-50 rounded-b-2xl border border-slate-200 shadow-md p-6 md:p-10">
+                        <h3 id="question-text" class="text-xl md:text-2xl font-semibold text-slate-800 mb-8 leading-relaxed">
+                            <!-- Question injected here -->
+                        </h3>
+                        
+                        <div id="options-container" class="space-y-3 mb-8">
+                            <!-- Options injected here -->
+                        </div>
+
+                        <!-- Feedback area for practice mode -->
+                        <div id="feedback-area" class="hidden mb-6 p-4 rounded-lg border">
+                            <p id="feedback-msg" class="font-bold mb-2"></p>
+                            <p id="feedback-explanation" class="text-sm text-slate-700"></p>
+                        </div>
+                        
+                        <div class="flex justify-between border-t border-slate-200 pt-6">
+                            <button id="btn-skip" onclick="skipQuestion()" class="px-6 py-2 border border-slate-300 text-slate-600 rounded-lg hover:bg-slate-100 transition font-medium">Skip</button>
+                            <button id="btn-next" onclick="nextQuestion()" class="px-6 py-2 bg-defblue-600 text-white rounded-lg hover:bg-defblue-700 transition font-medium shadow-sm">Next Question</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Screen -->
+                <div id="quiz-results" class="hidden bg-white rounded-2xl shadow-lg border border-slate-200 p-8 text-center">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-6">Exam Scorecard</h2>
+                    
+                    <div class="flex justify-center mb-8">
+                        <div class="w-48 h-48 rounded-full border-8 border-slate-100 flex flex-col items-center justify-center relative shadow-inner">
+                            <svg class="absolute inset-0 w-full h-full transform -rotate-90">
+                                <circle id="score-circle" cx="96" cy="96" r="88" stroke="currentColor" stroke-width="8" fill="transparent" class="text-defblue-600 transition-all duration-1000" stroke-dasharray="552.9" stroke-dashoffset="552.9"></circle>
+                            </svg>
+                            <span class="text-4xl font-bold text-slate-800 z-10" id="final-score-val">0</span>
+                            <span class="text-xs text-slate-500 uppercase font-semibold z-10 mt-1">Marks</span>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-4 mb-8 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <div>
+                            <p class="text-sm text-slate-500 mb-1">Correct</p>
+                            <p id="res-correct" class="text-2xl font-bold text-green-600">0</p>
+                        </div>
+                        <div class="border-l border-r border-slate-200">
+                            <p class="text-sm text-slate-500 mb-1">Incorrect (-0.33)</p>
+                            <p id="res-wrong" class="text-2xl font-bold text-red-500">0</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-500 mb-1">Skipped</p>
+                            <p id="res-skipped" class="text-2xl font-bold text-slate-600">0</p>
+                        </div>
+                    </div>
+                    
+                    <button onclick="resetQuizView()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-8 rounded-lg transition">Back to Dashboard</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= ELIGIBILITY VIEW ================= -->
+        <div id="eligibility" class="view-section bg-slate-50 py-10 min-h-screen">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="bg-defolive-800 p-8 text-white text-center">
+                        <i class="fa-solid fa-scale-balanced text-4xl mb-3 text-defolive-100"></i>
+                        <h2 class="text-3xl font-bold mb-2">Age & Eligibility Calculator</h2>
+                        <p class="text-defolive-100 opacity-90">Find out which Defense Academies you can apply for in the next CDS examination based on UPSC rules.</p>
+                    </div>
+                    
+                    <div class="p-8">
+                        <div class="grid md:grid-cols-2 gap-6 mb-8">
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">Date of Birth</label>
+                                <input type="date" id="calc-dob" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-defolive-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">Gender</label>
+                                <select id="calc-gender" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-defolive-500 focus:outline-none">
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">Marital Status</label>
+                                <select id="calc-marital" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-defolive-500 focus:outline-none">
+                                    <option value="unmarried">Unmarried</option>
+                                    <option value="married">Married</option>
+                                </select>
+                                <p class="text-xs text-slate-500 mt-2"><i class="fa-solid fa-circle-info mr-1"></i> Married candidates are only eligible for OTA.</p>
+                            </div>
+                        </div>
+                        
+                        <div id="eligibility-error" class="hidden bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4 border border-red-200">
+                            Please fill in all fields correctly.
+                        </div>
+
+                        <button onclick="calculateEligibility()" class="w-full bg-defolive-600 hover:bg-defolive-700 text-white font-bold py-3 px-4 rounded-lg transition shadow-md">
+                            Check My Eligibility
+                        </button>
+                    </div>
+
+                    <!-- Results Area -->
+                    <div id="eligibility-results" class="hidden border-t border-slate-200 bg-slate-50 p-8">
+                        <h3 class="text-xl font-bold text-slate-800 mb-6 text-center border-b pb-2">Your Eligibility Status</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="eligibility-cards">
+                            <!-- Cards injected via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= RESOURCES VIEW ================= -->
+        <div id="resources" class="view-section py-10 min-h-screen">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-8 gap-4">
+                    <div>
+                        <h2 class="text-3xl font-bold text-slate-800">Study Materials & PYQs</h2>
+                        <p class="text-slate-600 mt-1">Download previous year question papers and cheat sheets.</p>
+                    </div>
+                    
+                    <div class="flex w-full md:w-auto gap-2">
+                        <select id="res-filter-subject" onchange="filterResources()" class="p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-defblue-500 bg-white">
+                            <option value="all">All Subjects</option>
+                            <option value="gk">General Knowledge</option>
+                            <option value="eng">English</option>
+                            <option value="math">Mathematics</option>
+                        </select>
+                        <select id="res-filter-year" onchange="filterResources()" class="p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-defblue-500 bg-white">
+                            <option value="all">All Years</option>
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="resources-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Cards injected via JS -->
+                </div>
+
+                <!-- Cheat Sheets Section -->
+                <h3 class="text-2xl font-bold text-slate-800 mt-16 mb-6 border-b pb-2">Quick Formula Cheat Sheets</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gradient-to-br from-slate-800 to-slate-900 text-white p-6 rounded-xl shadow-lg relative overflow-hidden group">
+                        <i class="fa-solid fa-square-root-variable absolute -right-4 -bottom-4 text-8xl text-white opacity-10 group-hover:scale-110 transition duration-500"></i>
+                        <h4 class="text-xl font-bold mb-2">Math: Trigonometry & Mensuration</h4>
+                        <p class="text-slate-300 text-sm mb-4">All essential 2D/3D formulas, identity shortcuts, and height & distance tricks.</p>
+                        <button class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-md text-sm font-medium transition backdrop-blur-sm">View PDF</button>
+                    </div>
+                    <div class="bg-gradient-to-br from-defblue-700 to-defblue-900 text-white p-6 rounded-xl shadow-lg relative overflow-hidden group">
+                        <i class="fa-solid fa-landmark absolute -right-4 -bottom-4 text-8xl text-white opacity-10 group-hover:scale-110 transition duration-500"></i>
+                        <h4 class="text-xl font-bold mb-2">GK: Essential Polity Articles</h4>
+                        <p class="text-slate-300 text-sm mb-4">Mnemonic charts for Parts, Schedules, and important Constitutional Articles.</p>
+                        <button class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-md text-sm font-medium transition backdrop-blur-sm">View PDF</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="mb-4">
+                <i class="fa-solid fa-shield-halved text-2xl text-slate-600 mb-2"></i>
+                <h3 class="text-lg font-bold text-slate-200 tracking-wider">TargetCDS</h3>
+            </div>
+            <p class="text-sm">An interactive SPA for Defence Aspirants.</p>
+            <p class="text-xs mt-2 opacity-60">&copy; 2026 DefendTech Preparation. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ==========================================
+        // 1. DATA CONFIGURATION
+        // ==========================================
+
+        // Real Syllabus Data based on actual UPSC CDS parameters
+        const syllabusData = {
+            gk: [
+                { id: 'gk1', title: 'Indian Polity & Governance', topics: ['Making of the Constitution & Salient Features', 'Fundamental Rights, DPSP & Duties', 'Union Executive (President, PM, Council)', 'Parliament & State Legislatures', 'Judiciary (Supreme Court & High Courts)', 'Constitutional & Non-Constitutional Bodies', 'Panchayati Raj & Municipalities'] },
+                { id: 'gk2', title: 'Geography (Indian & World)', topics: ['Physical Geography (Geomorphology, Climatology, Oceanography)', 'Indian Drainage System (Rivers)', 'Physiography of India (Himalayas, Peninsular Plateau)', 'Agriculture, Soils & Natural Vegetation', 'Economic Geography (Minerals & Industries)', 'World Geography Maps & Straits'] },
+                { id: 'gk3', title: 'History of India', topics: ['Ancient: Indus Valley, Vedic, Buddhism & Jainism', 'Ancient: Mauryan & Gupta Empires', 'Medieval: Delhi Sultanate & Mughal Empire', 'Modern: Socio-Religious Reform Movements', 'Modern: Indian National Movement (1857 to 1947)', 'Governor Generals & Viceroys'] },
+                { id: 'gk4', title: 'General Science', topics: ['Physics: Optics, Motion, Sound, Electricity & Magnetism', 'Chemistry: Acids, Bases, Metals, Non-metals, Polymers', 'Biology: Cell structure, Human Body Systems, Diseases', 'Environment & Ecology'] },
+                { id: 'gk5', title: 'Economy & Current Affairs', topics: ['Macroeconomics (Inflation, Banking, RBI)', 'Five Year Plans & NITI Aayog', 'Union Budget & Taxation', 'Defence: Exercises, Missiles, Submarines & Aircraft', 'International Summits (G20, QUAD, ASEAN)', 'Sports, Awards & Honours'] }
+            ],
+            eng: [
+                { id: 'eng1', title: 'Grammar & Spotting Errors', topics: ['Subject-Verb Agreement', 'Tenses and Sequence of Tenses', 'Prepositions & Articles', 'Conditional Sentences', 'Nouns, Pronouns, Adjectives & Adverbs'] },
+                { id: 'eng2', title: 'Vocabulary', topics: ['Synonyms (Contextual)', 'Antonyms (Contextual)', 'Idioms & Phrases', 'One Word Substitution'] },
+                { id: 'eng3', title: 'Comprehension & Arrangement', topics: ['Reading Comprehension (Passages)', 'Ordering of Words in a Sentence (PQRS)', 'Ordering of Sentences in a Paragraph (S1-S6)', 'Fill in the Blanks (Cloze Test)'] }
+            ],
+            math: [
+                { id: 'mat1', title: 'Number System & Arithmetic', topics: ['Rational & Irrational Numbers, Divisibility Rules', 'HCF and LCM', 'Time & Work, Pipes & Cisterns', 'Time, Distance & Speed (Trains, Boats)', 'Percentages, Profit & Loss, Simple/Compound Interest', 'Ratio, Proportion & Variation'] },
+                { id: 'mat2', title: 'Algebra', topics: ['Basic Operations, Remainder Theorem', 'Polynomials & Factorization', 'Linear Equations in Two Variables', 'Quadratic Equations', 'Set Theory & Laws of Indices'] },
+                { id: 'mat3', title: 'Trigonometry', topics: ['Trigonometric Ratios (Sine, Cosine, Tangent)', 'Trigonometric Identities', 'Use of Trigonometric Tables', 'Heights and Distances'] },
+                { id: 'mat4', title: 'Geometry & Mensuration', topics: ['Lines and Angles (Parallel lines)', 'Triangles (Congruence, Similarity, Centers)', 'Circles (Chords, Tangents, Secants)', 'Mensuration 2D: Area of Triangles, Squares, Rectangles, Circles', 'Mensuration 3D: Volume/Surface Area of Cubes, Cylinders, Cones, Spheres'] },
+                { id: 'mat5', title: 'Statistics', topics: ['Collection and Tabulation of Statistical Data', 'Graphical Representation (Histograms, Bar Charts, Pie Charts)', 'Measures of Central Tendency (Mean, Median, Mode)'] }
+            ]
+        };
+
+        // Real CDS level questions (Past Year Patterns)
+        const quizDatabase = {
+            gk: [
+                { q: "Which of the following Schedules of the Constitution of India contains provisions regarding Anti-Defection?", options: ["Eighth Schedule", "Ninth Schedule", "Tenth Schedule", "Eleventh Schedule"], correct: 2, exp: "The Tenth Schedule was added by the 52nd Amendment Act in 1985 and contains provisions relating to disqualification of members of Parliament and State Legislatures on the ground of defection." },
+                { q: "The Tropic of Cancer passes through how many states in India?", options: ["6", "7", "8", "9"], correct: 2, exp: "It passes through 8 states: Gujarat, Rajasthan, Madhya Pradesh, Chhattisgarh, Jharkhand, West Bengal, Tripura, and Mizoram." },
+                { q: "Who among the following was the Viceroy of India at the time of the Jallianwala Bagh Massacre?", options: ["Lord Irwin", "Lord Chelmsford", "Lord Hardinge", "Lord Curzon"], correct: 1, exp: "Lord Chelmsford was the Viceroy of India from 1916 to 1921. The Jallianwala Bagh massacre occurred on April 13, 1919." },
+                { q: "The 'Varuna' naval exercise is conducted bilaterally between India and which country?", options: ["Russia", "USA", "France", "Japan"], correct: 2, exp: "Varuna is a bilateral naval exercise between the Indian Navy and the French Navy, initiated in 1983." },
+                { q: "Which of the following is not a member of the 'QUAD' group?", options: ["India", "Australia", "Japan", "South Korea"], correct: 3, exp: "The Quadrilateral Security Dialogue (QUAD) comprises India, the United States, Japan, and Australia." }
+            ],
+            eng: [
+                { q: "Spot the Error: 'He is one of the best players (a) / who has ever played (b) / this game. (c) / No error (d)'", options: ["(a)", "(b)", "(c)", "(d)"], correct: 1, exp: "Error is in part (b). In 'one of the + plural noun + relative pronoun', the verb that follows the relative pronoun should be plural. So it should be 'who have ever played'." },
+                { q: "Select the Antonym for: 'OBSCURE'", options: ["Clear", "Hidden", "Complex", "Distant"], correct: 0, exp: "Obscure means not discovered or known about; uncertain. The exact opposite is 'Clear'." },
+                { q: "Meaning of the idiom: 'To throw down the gauntlet'", options: ["To accept defeat", "To issue a challenge", "To run away", "To start a fire"], correct: 1, exp: "To throw down the gauntlet means to declare or issue a challenge." },
+                { q: "Fill in the blank: 'The manager was completely ______ in his work and didn't notice the time.'", options: ["engrossed", "attached", "subjected", "repelled"], correct: 0, exp: "'Engrossed' means having all one's attention or interest absorbed by someone or something." },
+                { q: "Ordering of Words: (P) the students / (Q) to complete / (R) the teacher asked / (S) their assignments", options: ["RPQS", "RPSQ", "PRQS", "SQRP"], correct: 1, exp: "The logical order is 'The teacher asked (R) the students (P) to complete (S) their assignments (Q)' -> RPSQ." }
+            ],
+            math: [
+                { q: "If the radius of a circle is increased by 50%, its area will increase by:", options: ["50%", "100%", "125%", "225%"], correct: 2, exp: "Let initial radius be r. Area = πr². New radius = 1.5r. New Area = π(1.5r)² = 2.25πr². Increase = 2.25 - 1 = 1.25 or 125%." },
+                { q: "What is the value of: sin² 25° + sin² 65°?", options: ["0", "1", "2", "-1"], correct: 1, exp: "sin² 65° = sin²(90° - 25°) = cos² 25°. Therefore, sin² 25° + cos² 25° = 1." },
+                { q: "The sides of a triangle are 10 cm, 24 cm, and 26 cm. What is its area?", options: ["120 cm²", "240 cm²", "130 cm²", "312 cm²"], correct: 0, exp: "This is a right-angled triangle because 10² + 24² = 26² (100 + 576 = 676). Area = 1/2 * base * height = 1/2 * 10 * 24 = 120 cm²." },
+                { q: "If x + 1/x = 3, then what is the value of x² + 1/x²?", options: ["7", "9", "11", "5"], correct: 0, exp: "Squaring both sides: (x + 1/x)² = 3² => x² + 1/x² + 2(x)(1/x) = 9 => x² + 1/x² + 2 = 9 => x² + 1/x² = 7." },
+                { q: "A train 100m long is running at a speed of 30 km/hr. Find the time taken by it to pass a man standing near the railway line.", options: ["10 sec", "12 sec", "15 sec", "20 sec"], correct: 1, exp: "Speed in m/s = 30 * (5/18) = 25/3 m/s. Distance to cover = length of train = 100m. Time = Distance/Speed = 100 / (25/3) = (100 * 3) / 25 = 12 seconds." }
+            ]
+        };
+
+        // Realistic Past Year Papers and Resources
+        const resourcesDB = [
+            { title: "CDS I 2026 Notification & Syllabus", type: "pdf", year: "2026", subject: "all", size: "3.2 MB" },
+            { title: "CDS II 2025 General Knowledge PYQ", type: "pdf", year: "2025", subject: "gk", size: "2.4 MB" },
+            { title: "CDS II 2025 English PYQ", type: "pdf", year: "2025", subject: "eng", size: "1.8 MB" },
+            { title: "CDS II 2025 Mathematics PYQ", type: "pdf", year: "2025", subject: "math", size: "2.1 MB" },
+            { title: "CDS I 2025 General Knowledge PYQ", type: "pdf", year: "2025", subject: "gk", size: "2.5 MB" },
+            { title: "CDS I 2025 English PYQ", type: "pdf", year: "2025", subject: "eng", size: "1.9 MB" },
+            { title: "CDS I 2025 Mathematics PYQ", type: "pdf", year: "2025", subject: "math", size: "2.3 MB" },
+            { title: "CDS II 2024 General Knowledge PYQ", type: "pdf", year: "2024", subject: "gk", size: "2.2 MB" },
+            { title: "CDS II 2024 English PYQ", type: "pdf", year: "2024", subject: "eng", size: "1.7 MB" },
+            { title: "CDS II 2024 Mathematics PYQ", type: "pdf", year: "2024", subject: "math", size: "2.0 MB" },
+            { title: "Polity Quick Revision (Parts & Schedules)", type: "pdf", year: "all", subject: "gk", size: "1.1 MB" },
+            { title: "100 Important Math Shortcuts", type: "pdf", year: "all", subject: "math", size: "1.5 MB" }
+        ];
+
+        // ==========================================
+        // 2. SPA NAVIGATION LOGIC
+        // ==========================================
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Setup Nav buttons
+            const navBtns = document.querySelectorAll('.nav-btn');
+            const views = document.querySelectorAll('.view-section');
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            navBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const targetId = e.target.getAttribute('data-target');
+                    
+                    // Hide all views, remove active styling from nav
+                    views.forEach(v => v.classList.remove('active'));
+                    navBtns.forEach(b => {
+                        b.classList.remove('bg-defblue-800', 'text-white', 'bg-defblue-900');
+                        b.classList.add('text-blue-100');
+                    });
+                    
+                    // Show target view, add active styling
+                    document.getElementById(targetId).classList.add('active');
+                    
+                    // Style desktop buttons
+                    document.querySelectorAll(`.nav-btn[data-target="${targetId}"]`).forEach(b => {
+                        if(b.parentElement.id === 'desktop-nav') {
+                            b.classList.add('bg-defblue-800', 'text-white');
+                            b.classList.remove('text-blue-100');
+                        } else {
+                            b.classList.add('bg-defblue-900', 'text-white');
+                            b.classList.remove('text-blue-100');
+                        }
+                    });
+
+                    // Close mobile menu if open
+                    mobileMenu.classList.add('hidden');
+                    window.scrollTo(0,0);
+                });
+            });
+
+            // Mobile menu toggle
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Initialize Modules
+            initHome();
+            initSyllabus();
+            renderResources();
+        });
+
+        // ==========================================
+        // 3. HOME PAGE LOGIC
+        // ==========================================
+
+        function initHome() {
+            // Countdown Timer (Target: Sept 6, 2026 - Typical CDS II Date)
+            const targetDate = new Date('September 6, 2026 09:00:00').getTime();
+            
+            setInterval(() => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                if (distance < 0) return; // Exam day!
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById('cd-days').innerText = days.toString().padStart(2, '0');
+                document.getElementById('cd-hours').innerText = hours.toString().padStart(2, '0');
+                document.getElementById('cd-mins').innerText = minutes.toString().padStart(2, '0');
+                document.getElementById('cd-secs').innerText = seconds.toString().padStart(2, '0');
+            }, 1000);
+
+            // Quotes Rotator
+            const quotes = [
+                "Discipline is the soul of an Army.",
+                "Service Before Self.",
+                "Do you have it in you?",
+                "Some goals are so worthy, it's glorious even to fail.",
+                "Valor is stability, not of legs and arms, but of courage and the soul."
+            ];
+            let qIdx = 0;
+            setInterval(() => {
+                qIdx = (qIdx + 1) % quotes.length;
+                const qContainer = document.getElementById('quote-container');
+                qContainer.style.opacity = 0;
+                setTimeout(() => {
+                    qContainer.innerText = `"${quotes[qIdx]}"`;
+                    qContainer.style.opacity = 1;
+                    qContainer.style.transition = "opacity 0.5s ease";
+                }, 500);
+            }, 6000);
+        }
+
+        function selectAim(academy) {
+            const infoCard = document.getElementById('aim-info-card');
+            // Reset buttons
+            document.querySelectorAll('.aim-btn').forEach(btn => {
+                btn.classList.remove('border-defblue-600', 'bg-blue-50');
+                btn.classList.add('border-slate-200', 'bg-white');
+            });
+            // Highlight selected
+            const btn = document.getElementById(`btn-${academy}`);
+            btn.classList.add('border-defblue-600', 'bg-blue-50');
+            btn.classList.remove('border-slate-200', 'bg-white');
+
+            // Real approximate cutoffs based on past 3 years trends
+            const data = {
+                ima: { name: "Indian Military Academy", papers: "English, GK, Math (300 Marks)", cutoff: "135 - 142 / 300", age: "19 to 24 Years", gender: "Male (Unmarried)" },
+                ina: { name: "Indian Naval Academy", papers: "English, GK, Math (300 Marks)", cutoff: "128 - 134 / 300", age: "19 to 24 Years", gender: "Male (Unmarried)" },
+                afa: { name: "Air Force Academy", papers: "English, GK, Math (300 Marks)", cutoff: "148 - 156 / 300", age: "20 to 24 Years", gender: "Male & Female (Unmarried)" },
+                ota: { name: "Officers Training Academy", papers: "English, GK Only (200 Marks)", cutoff: "98 - 105 / 200", age: "19 to 25 Years", gender: "Male & Female (Un/Married)" }
+            };
+
+            const d = data[academy];
+            infoCard.innerHTML = `
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <div class="text-left mb-4 md:mb-0">
+                        <h3 class="text-xl font-bold text-slate-800">${d.name} Pattern</h3>
+                        <p class="text-slate-600 font-medium mt-1"><i class="fa-solid fa-file-lines text-defblue-600 w-5"></i> Papers: ${d.papers}</p>
+                        <p class="text-slate-600 mt-1"><i class="fa-solid fa-user-shield text-defolive-600 w-5"></i> Eligibility: ${d.gender}, ${d.age}</p>
+                    </div>
+                    <div class="bg-red-50 p-4 rounded-lg border border-red-100 text-center min-w-[200px]">
+                        <p class="text-xs text-red-800 font-bold uppercase tracking-wider mb-1">Estimated Safe Score</p>
+                        <p class="text-2xl font-bold text-red-600">${d.cutoff}</p>
+                    </div>
+                </div>
+            `;
+            infoCard.classList.remove('hidden');
+        }
+
+        // ==========================================
+        // 4. SYLLABUS TRACKER LOGIC
+        // ==========================================
+        
+        let savedProgress = JSON.parse(localStorage.getItem('cds_syllabus_state')) || {};
+
+        function initSyllabus() {
+            switchSyllabusTab('gk'); // Load default
+            calculateOverallProgress();
+        }
+
+        function switchSyllabusTab(subject) {
+            // Style tabs
+            const tabs = ['gk', 'eng', 'math'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === subject) {
+                    btn.classList.add('text-defblue-600', 'border-defblue-600', 'bg-blue-50');
+                    btn.classList.remove('text-slate-500', 'border-transparent', 'hover:bg-slate-50');
+                } else {
+                    btn.classList.remove('text-defblue-600', 'border-defblue-600', 'bg-blue-50');
+                    btn.classList.add('text-slate-500', 'border-transparent', 'hover:bg-slate-50');
+                }
+            });
+
+            // Render content
+            const container = document.getElementById('syllabus-content');
+            container.innerHTML = '';
+            
+            syllabusData[subject].forEach((section, index) => {
+                // Determine section completion
+                let checkedCount = 0;
+                section.topics.forEach(topic => {
+                    const key = `${subject}_${section.id}_${topic}`;
+                    if (savedProgress[key]) checkedCount++;
+                });
+                const isComplete = checkedCount === section.topics.length && section.topics.length > 0;
+                const headerBg = isComplete ? 'bg-defolive-50' : 'bg-slate-50';
+                
+                let topicsHtml = section.topics.map(topic => {
+                    const key = `${subject}_${section.id}_${topic}`;
+                    const isChecked = savedProgress[key] ? 'checked' : '';
+                    return `
+                        <label class="flex items-center space-x-3 p-3 hover:bg-slate-50 rounded-lg cursor-pointer transition border border-transparent hover:border-slate-200">
+                            <input type="checkbox" class="syllabus-checkbox" onchange="toggleTopic('${key}', this)" ${isChecked}>
+                            <span class="text-slate-700 font-medium ${isChecked ? 'line-through text-slate-400' : ''}">${topic}</span>
+                        </label>
+                    `;
+                }).join('');
+
+                container.innerHTML += `
+                    <div class="mb-4 border border-slate-200 rounded-xl overflow-hidden">
+                        <div class="${headerBg} px-6 py-4 flex justify-between items-center cursor-pointer" onclick="toggleAccordion('acc-${section.id}')">
+                            <h3 class="font-bold text-slate-800">${section.title}</h3>
+                            <div class="flex items-center space-x-3">
+                                <span class="text-xs font-semibold px-2 py-1 bg-white rounded-md text-slate-500 border border-slate-200">${checkedCount}/${section.topics.length}</span>
+                                <i class="fa-solid fa-chevron-down text-slate-400 transition-transform" id="icon-acc-${section.id}"></i>
+                            </div>
+                        </div>
+                        <div id="acc-${section.id}" class="px-6 py-2 bg-white ${index === 0 ? '' : 'hidden'}">
+                            ${topicsHtml}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            content.classList.toggle('hidden');
+            if (content.classList.contains('hidden')) {
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        function toggleTopic(key, checkbox) {
+            savedProgress[key] = checkbox.checked;
+            localStorage.setItem('cds_syllabus_state', JSON.stringify(savedProgress));
+            
+            // Visual toggle of text
+            const span = checkbox.nextElementSibling;
+            if (checkbox.checked) {
+                span.classList.add('line-through', 'text-slate-400');
+            } else {
+                span.classList.remove('line-through', 'text-slate-400');
+            }
+            
+            // Re-render current tab header updates and progress bar
+            const currentTab = document.querySelector('.syllabus-tab.text-defblue-600').id.replace('tab-', '');
+            switchSyllabusTab(currentTab);
+            calculateOverallProgress();
+        }
+
+        function calculateOverallProgress() {
+            let totalTopics = 0;
+            let completedTopics = 0;
+
+            Object.values(syllabusData).forEach(subject => {
+                subject.forEach(section => {
+                    totalTopics += section.topics.length;
+                });
+            });
+
+            completedTopics = Object.values(savedProgress).filter(val => val === true).length;
+            
+            let percentage = totalTopics === 0 ? 0 : Math.round((completedTopics / totalTopics) * 100);
+            
+            document.getElementById('overall-progress-bar').style.width = `${percentage}%`;
+            document.getElementById('overall-progress-text').innerText = `${percentage}%`;
+            
+            if (percentage === 100) {
+                document.getElementById('overall-progress-bar').classList.replace('bg-defblue-600', 'bg-defolive-600');
+            } else {
+                document.getElementById('overall-progress-bar').classList.replace('bg-defolive-600', 'bg-defblue-600');
+            }
+        }
+
+        // ==========================================
+        // 5. MOCK QUIZ ENGINE LOGIC
+        // ==========================================
+        
+        let currentQuiz = [];
+        let currentQIndex = 0;
+        let quizScore = { correct: 0, wrong: 0, skipped: 0 };
+        let isExamMode = false;
+        let timerInterval;
+
+        function startQuiz() {
+            const subject = document.getElementById('quiz-subject').value;
+            isExamMode = document.querySelector('input[name="quiz-mode"]:checked').value === 'exam';
+            
+            currentQuiz = [...quizDatabase[subject]]; // Clone array
+            currentQIndex = 0;
+            quizScore = { correct: 0, wrong: 0, skipped: 0 };
+            
+            document.getElementById('quiz-setup').classList.remove('block', 'active');
+            document.getElementById('quiz-setup').classList.add('hidden');
+            
+            document.getElementById('quiz-active').classList.remove('hidden');
+            document.getElementById('quiz-active').classList.add('block', 'active');
+            
+            document.getElementById('q-total').innerText = currentQuiz.length;
+
+            if (isExamMode) {
+                startTimer(120); // 120 minutes
+            } else {
+                document.getElementById('timer-display').classList.add('hidden');
+            }
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const qData = currentQuiz[currentQIndex];
+            document.getElementById('q-current').innerText = currentQIndex + 1;
+            document.getElementById('question-text').innerText = qData.q;
+            
+            const optContainer = document.getElementById('options-container');
+            optContainer.innerHTML = '';
+            
+            qData.options.forEach((opt, idx) => {
+                optContainer.innerHTML += `
+                    <label class="block p-4 border border-slate-200 rounded-lg hover:bg-blue-50 cursor-pointer transition relative option-label">
+                        <input type="radio" name="q-option" value="${idx}" class="absolute opacity-0">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center radio-custom">
+                                <div class="w-3 h-3 rounded-full bg-defblue-600 hidden"></div>
+                            </div>
+                            <span class="font-medium text-slate-700">${opt}</span>
+                        </div>
+                    </label>
+                `;
+            });
+
+            // Reset UI for practice mode
+            const feedback = document.getElementById('feedback-area');
+            feedback.classList.add('hidden');
+            document.getElementById('btn-next').innerText = (currentQIndex === currentQuiz.length - 1) ? "Submit Exam" : "Next Question";
+            document.getElementById('btn-next').onclick = isExamMode ? nextQuestion : checkAnswer;
+
+            // Add listener for visual radio buttons
+            document.querySelectorAll('input[name="q-option"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    // Reset all
+                    document.querySelectorAll('.option-label').forEach(l => {
+                        l.classList.remove('border-defblue-600', 'bg-blue-50');
+                        l.querySelector('.radio-custom').classList.remove('border-defblue-600');
+                        l.querySelector('.radio-custom div').classList.add('hidden');
+                    });
+                    // Style selected
+                    if(this.checked) {
+                        const label = this.closest('.option-label');
+                        label.classList.add('border-defblue-600', 'bg-blue-50');
+                        label.querySelector('.radio-custom').classList.add('border-defblue-600');
+                        label.querySelector('.radio-custom div').classList.remove('hidden');
+                    }
+                });
+            });
+        }
+
+        function checkAnswer() {
+            // Only used in Practice mode before moving to next
+            const selected = document.querySelector('input[name="q-option"]:checked');
+            if (!selected) {
+                // Show temporary inline message instead of alert
+                const btn = document.getElementById('btn-next');
+                const origText = btn.innerText;
+                btn.innerText = "Select an option!";
+                btn.classList.add('bg-red-500');
+                setTimeout(() => {
+                    btn.innerText = origText;
+                    btn.classList.remove('bg-red-500');
+                }, 1500);
+                return;
+            }
+
+            const qData = currentQuiz[currentQIndex];
+            const isCorrect = parseInt(selected.value) === qData.correct;
+            
+            const feedback = document.getElementById('feedback-area');
+            const fbMsg = document.getElementById('feedback-msg');
+            const fbExp = document.getElementById('feedback-explanation');
+            
+            feedback.classList.remove('hidden', 'bg-red-50', 'border-red-200', 'bg-green-50', 'border-green-200');
+            
+            if (isCorrect) {
+                quizScore.correct++;
+                feedback.classList.add('bg-green-50', 'border-green-200');
+                fbMsg.className = 'font-bold mb-2 text-green-700';
+                fbMsg.innerHTML = '<i class="fa-solid fa-circle-check"></i> Correct Answer!';
+            } else {
+                quizScore.wrong++;
+                feedback.classList.add('bg-red-50', 'border-red-200');
+                fbMsg.className = 'font-bold mb-2 text-red-700';
+                fbMsg.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Incorrect Answer!';
+            }
+            
+            fbExp.innerText = qData.exp;
+            
+            // Change button to proceed
+            const btnNext = document.getElementById('btn-next');
+            btnNext.innerText = (currentQIndex === currentQuiz.length - 1) ? "Finish" : "Continue";
+            btnNext.onclick = nextQuestion;
+            
+            // Disable inputs
+            document.querySelectorAll('input[name="q-option"]').forEach(r => r.disabled = true);
+        }
+
+        function nextQuestion() {
+            if (isExamMode) {
+                const selected = document.querySelector('input[name="q-option"]:checked');
+                if (selected) {
+                    if (parseInt(selected.value) === currentQuiz[currentQIndex].correct) quizScore.correct++;
+                    else quizScore.wrong++;
+                } else {
+                    // if they hit next without selecting, it's considered skipped. 
+                    // However, we have a explicit skip button, so if they hit next without selection, prompt them.
+                    const btn = document.getElementById('btn-next');
+                    const origText = btn.innerText;
+                    btn.innerText = "Select or Skip!";
+                    setTimeout(() => { btn.innerText = origText; }, 1500);
+                    return;
+                }
+            }
+
+            currentQIndex++;
+            if (currentQIndex < currentQuiz.length) {
+                loadQuestion();
+            } else {
+                endQuiz();
+            }
+        }
+
+        function skipQuestion() {
+            quizScore.skipped++;
+            currentQIndex++;
+            if (currentQIndex < currentQuiz.length) {
+                loadQuestion();
+            } else {
+                endQuiz();
+            }
+        }
+
+        function startTimer(minutes) {
+            let seconds = minutes * 60;
+            const display = document.getElementById('time-left');
+            document.getElementById('timer-display').classList.remove('hidden');
+            
+            timerInterval = setInterval(() => {
+                seconds--;
+                if (seconds <= 0) {
+                    clearInterval(timerInterval);
+                    endQuiz();
+                }
+                const m = Math.floor(seconds / 60);
+                const s = seconds % 60;
+                display.innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function endQuiz() {
+            clearInterval(timerInterval);
+            document.getElementById('quiz-active').classList.add('hidden');
+            document.getElementById('quiz-active').classList.remove('active', 'block');
+            
+            const resultsView = document.getElementById('quiz-results');
+            resultsView.classList.remove('hidden');
+            resultsView.classList.add('block', 'active');
+            
+            document.getElementById('res-correct').innerText = quizScore.correct;
+            document.getElementById('res-wrong').innerText = quizScore.wrong;
+            document.getElementById('res-skipped').innerText = quizScore.skipped;
+            
+            // Calculate final marks
+            const totalMarks = (quizScore.correct * 1) - (quizScore.wrong * 0.33);
+            const finalScoreStr = Math.max(0, totalMarks).toFixed(2); // No negative total score
+            
+            // Animate Score
+            let currentDisplay = 0;
+            const targetScore = parseFloat(finalScoreStr);
+            const scoreDisplay = document.getElementById('final-score-val');
+            
+            const animTimer = setInterval(() => {
+                currentDisplay += 0.5;
+                if(currentDisplay >= targetScore) {
+                    scoreDisplay.innerText = finalScoreStr;
+                    clearInterval(animTimer);
+                } else {
+                    scoreDisplay.innerText = currentDisplay.toFixed(1);
+                }
+            }, 30);
+
+            // Animate Circle
+            const circle = document.getElementById('score-circle');
+            const maxScore = currentQuiz.length; // 1 mark per Q
+            const percentage = Math.max(0, (targetScore / maxScore));
+            const circumference = 2 * Math.PI * 88; // r=88
+            const offset = circumference - (percentage * circumference);
+            setTimeout(() => {
+                circle.style.strokeDashoffset = offset;
+                if(percentage > 0.6) circle.classList.replace('text-defblue-600', 'text-green-500');
+                else if (percentage < 0.4) circle.classList.replace('text-defblue-600', 'text-red-500');
+            }, 100);
+        }
+
+        function quitQuiz() {
+            clearInterval(timerInterval);
+            resetQuizView();
+        }
+
+        function resetQuizView() {
+            document.getElementById('quiz-results').classList.add('hidden');
+            document.getElementById('quiz-active').classList.add('hidden');
+            document.getElementById('quiz-setup').classList.remove('hidden');
+            document.getElementById('quiz-setup').classList.add('block', 'active');
+            
+            // Reset UI states
+            document.getElementById('score-circle').style.strokeDashoffset = 552.9;
+            document.getElementById('score-circle').className = "text-defblue-600 transition-all duration-1000";
+        }
+
+        // ==========================================
+        // 6. ELIGIBILITY CALCULATOR LOGIC
+        // ==========================================
+        
+        function calculateEligibility() {
+            const dobInput = document.getElementById('calc-dob').value;
+            const gender = document.getElementById('calc-gender').value;
+            const marital = document.getElementById('calc-marital').value;
+            const errorDiv = document.getElementById('eligibility-error');
+            
+            if (!dobInput) {
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+            errorDiv.classList.add('hidden');
+
+            const dob = new Date(dobInput);
+            
+            // Calculating based on typical CDS II 2026 notification rules
+            // Usually, for CDS II (September exam), course commences in July of the following year (July 2027)
+            // UPSC checks age precisely between specific dates. 
+            // e.g., For IMA (19-24): Born not earlier than 2nd July 2003 and not later than 1st July 2008.
+
+            const upperLimit19to24 = new Date('July 1, 2008');
+            const lowerLimitIMA_INA = new Date('July 2, 2003');
+            
+            const upperLimitAFA = new Date('July 1, 2007'); // AFA is 20-24
+            const lowerLimitAFA = new Date('July 2, 2003');
+            
+            const upperLimitOTA = new Date('July 1, 2008');
+            const lowerLimitOTA = new Date('July 2, 2002'); // OTA is 19-25
+
+            const container = document.getElementById('eligibility-cards');
+            container.innerHTML = ''; // Clear old
+
+            // Evaluation logic functions
+            const createCard = (title, icon, isEligible, reason) => {
+                const color = isEligible ? 'green' : 'red';
+                const status = isEligible ? '<i class="fa-solid fa-check mr-1"></i> Eligible' : '<i class="fa-solid fa-xmark mr-1"></i> Not Eligible';
+                return `
+                    <div class="bg-white border-2 border-${color}-200 p-5 rounded-xl shadow-sm">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="font-bold text-slate-800 text-lg"><i class="fa-solid ${icon} text-slate-400 mr-2"></i>${title}</h4>
+                            <span class="px-3 py-1 bg-${color}-100 text-${color}-800 text-xs font-bold rounded-full">${status}</span>
+                        </div>
+                        <p class="text-sm text-slate-600">${reason}</p>
+                    </div>
+                `;
+            };
+
+            let resultsHTML = '';
+
+            // 1. IMA - Unmarried Male, Born between 2nd Jul 2003 - 1st Jul 2008
+            let imaAgeEligible = dob >= lowerLimitIMA_INA && dob <= upperLimit19to24;
+            let imaEligible = gender === 'male' && marital === 'unmarried' && imaAgeEligible;
+            let imaReason = imaEligible ? "Meets strict UPSC DOB (2nd Jul '03 - 1st Jul '08) & marital criteria." : 
+                (gender !== 'male' ? "Only male candidates are eligible for IMA." : 
+                (marital !== 'unmarried' ? "Must be unmarried." : "DOB falls outside the 2nd Jul 2003 to 1st Jul 2008 window."));
+            resultsHTML += createCard("IMA (Indian Military Academy)", "fa-crosshairs", imaEligible, imaReason);
+
+            // 2. INA - Unmarried Male, Born between 2nd Jul 2003 - 1st Jul 2008
+            let inaEligible = gender === 'male' && marital === 'unmarried' && imaAgeEligible;
+            let inaReason = inaEligible ? "Meets strict UPSC DOB (2nd Jul '03 - 1st Jul '08) & marital criteria." : 
+                (gender !== 'male' ? "Only male candidates are eligible for INA." : 
+                (marital !== 'unmarried' ? "Must be unmarried." : "DOB falls outside the 2nd Jul 2003 to 1st Jul 2008 window."));
+            resultsHTML += createCard("INA (Indian Naval Academy)", "fa-anchor", inaEligible, inaReason);
+
+            // 3. AFA - 20-24 yrs, Born between 2nd Jul 2003 - 1st Jul 2007. Unmarried.
+            let afaAgeEligible = dob >= lowerLimitAFA && dob <= upperLimitAFA;
+            let afaEligible = marital === 'unmarried' && afaAgeEligible; 
+            let afaReason = afaEligible ? "Meets DOB (2nd Jul '03 - 1st Jul '07) and marital criteria." : 
+                (marital !== 'unmarried' ? "Must be unmarried (exceptions exist if age > 25, but CDS caps at 24)." : "DOB falls outside the 2nd Jul 2003 to 1st Jul 2007 window for AFA.");
+            resultsHTML += createCard("AFA (Air Force Academy)", "fa-plane", afaEligible, afaReason);
+
+            // 4. OTA - Male/Female, Married/Unmarried, Born between 2nd Jul 2002 - 1st Jul 2008
+            let otaAgeEligible = dob >= lowerLimitOTA && dob <= upperLimitOTA;
+            let otaReason = otaAgeEligible ? "Meets DOB criteria (2nd Jul '02 - 1st Jul '08). OTA accepts both genders and marital statuses." : "DOB falls outside the 2nd Jul 2002 to 1st Jul 2008 window.";
+            resultsHTML += createCard("OTA (Officers Training Academy)", "fa-star", otaAgeEligible, otaReason);
+
+            container.innerHTML = resultsHTML;
+            document.getElementById('eligibility-results').classList.remove('hidden');
+        }
+
+        // ==========================================
+        // 7. RESOURCES LOGIC
+        // ==========================================
+        
+        function renderResources(filteredData = resourcesDB) {
+            const grid = document.getElementById('resources-grid');
+            grid.innerHTML = '';
+            
+            if(filteredData.length === 0) {
+                grid.innerHTML = '<div class="col-span-full text-center py-10 text-slate-500">No resources found for this filter.</div>';
+                return;
+            }
+
+            const subjectIcons = {
+                gk: '<i class="fa-solid fa-earth-americas text-defolive-600"></i>',
+                eng: '<i class="fa-solid fa-book-open text-blue-500"></i>',
+                math: '<i class="fa-solid fa-calculator text-red-500"></i>'
+            };
+
+            filteredData.forEach(res => {
+                grid.innerHTML += `
+                    <div class="bg-white border border-slate-200 rounded-xl p-5 hover:shadow-md transition flex items-start space-x-4">
+                        <div class="bg-slate-100 p-3 rounded-lg text-2xl">
+                            ${subjectIcons[res.subject]}
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-start">
+                                <h4 class="font-bold text-slate-800 text-sm mb-1">${res.title}</h4>
+                                <span class="bg-slate-100 text-slate-500 text-[10px] font-bold px-2 py-1 rounded ml-2 uppercase">${res.type}</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mb-3">Size: ${res.size} • Year: ${res.year}</p>
+                            <button class="text-sm font-semibold text-defblue-600 hover:text-defblue-800 flex items-center transition">
+                                <i class="fa-solid fa-download mr-1.5"></i> Download File
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function filterResources() {
+            const subj = document.getElementById('res-filter-subject').value;
+            const year = document.getElementById('res-filter-year').value;
+            
+            let filtered = resourcesDB.filter(item => {
+                let matchSubj = subj === 'all' || item.subject === subj;
+                let matchYear = year === 'all' || item.year === year;
+                return matchSubj && matchYear;
+            });
+            
+            renderResources(filtered);
+        }
+
+    </script>
+</body>
+</html>

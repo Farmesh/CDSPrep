@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TargetCDS - Under Development</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+.development-hero{
+    min-height:100vh;
+    background:linear-gradient(
+        135deg,
+        var(--defblue-900) 0%,
+        var(--defblue-800) 100%
+    );
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    overflow:hidden;
+}
+
+.development-hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+    radial-gradient(circle at top right,
+    rgba(255,255,255,.08),
+    transparent 40%);
+}
+
+.dev-card{
+    max-width:800px;
+    width:90%;
+    background:rgba(255,255,255,.95);
+    backdrop-filter:blur(15px);
+    border-radius:24px;
+    padding:50px;
+    text-align:center;
+    box-shadow:0 25px 60px rgba(0,0,0,.25);
+}
+
+.lock-icon{
+    width:120px;
+    height:120px;
+    margin:auto;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--defolive-100);
+    color:var(--defolive-900);
+    font-size:3rem;
+    margin-bottom:25px;
+}
+
+.badge{
+    display:inline-block;
+    padding:8px 18px;
+    border-radius:999px;
+    background:var(--defblue-50);
+    color:var(--defblue-900);
+    font-weight:700;
+    margin-bottom:20px;
+}
+
+.title{
+    font-size:3rem;
+    font-weight:800;
+    color:var(--defblue-900);
+    margin-bottom:15px;
+}
+
+.subtitle{
+    color:var(--slate-600);
+    font-size:1.1rem;
+    max-width:600px;
+    margin:auto;
+    margin-bottom:35px;
+}
+
+.status-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+    margin-bottom:35px;
+}
+
+.status-box{
+    background:var(--slate-50);
+    border:1px solid var(--slate-200);
+    border-radius:15px;
+    padding:20px;
+}
+
+.status-box h3{
+    color:var(--defblue-900);
+    font-size:2rem;
+    font-weight:800;
+}
+
+.status-box p{
+    color:var(--slate-500);
+    font-size:.9rem;
+}
+
+.progress{
+    width:100%;
+    height:12px;
+    background:var(--slate-200);
+    border-radius:999px;
+    overflow:hidden;
+    margin-bottom:12px;
+}
+
+.progress-fill{
+    width:72%;
+    height:100%;
+    background:linear-gradient(
+        90deg,
+        var(--defblue-600),
+        var(--defolive-600)
+    );
+    animation:move 2s infinite alternate;
+}
+
+@keyframes move{
+    from{width:65%;}
+    to{width:80%;}
+}
+
+.action-buttons{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+@media(max-width:768px){
+
+    .title{
+        font-size:2rem;
+    }
+
+    .status-grid{
+        grid-template-columns:1fr;
+    }
+
+    .dev-card{
+        padding:30px 20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<section class="development-hero">
+
+    <div class="dev-card">
+
+        <div class="lock-icon">
+            <i class="fas fa-tools"></i>
+        </div>
+
+        <div class="badge">
+            TARGETCDS MODULE
+        </div>
+
+        <h1 class="title">
+            Feature Under Development
+        </h1>
+
+        <p class="subtitle">
+            This module is currently being built for CDS aspirants.
+            We are adding new content, mock tests, analytics and study tools.
+            It will be available soon.
+        </p>
+
+        <div class="status-grid">
+
+            <div class="status-box">
+                <h3>72%</h3>
+                <p>Development</p>
+            </div>
+
+            <div class="status-box">
+                <h3>18+</h3>
+                <p>Features Planned</p>
+            </div>
+
+            <div class="status-box">
+                <h3>2026</h3>
+                <p>Target Release</p>
+            </div>
+
+        </div>
+
+        <div class="progress">
+            <div class="progress-fill"></div>
+        </div>
+
+        <p style="color:var(--slate-500);margin-bottom:30px;">
+            Building something useful for future officers...
+        </p>
+
+        <div class="action-buttons">
+            <a href="index.html" class="btn-primary">
+                <i class="fas fa-home"></i>
+                Home
+            </a>
+
+            <button class="btn-secondary" onclick="history.back()">
+                <i class="fas fa-arrow-left"></i>
+                Go Back
+            </button>
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+</html>

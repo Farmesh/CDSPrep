@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syllabus Tracker | TargetCDS</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        defblue: {
+                            50: 'var(--defblue-50)',
+                            600: 'var(--defblue-600)',
+                            800: 'var(--defblue-800)',
+                            900: 'var(--defblue-900)',
+                        },
+                        defolive: {
+                            600: 'var(--defolive-600)',
+                            800: 'var(--defolive-800)',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .accordion-item {
+            transition: all 0.3s ease;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .accordion-content.active {
+            max-height: 1000px;
+        }
+
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-icon.active {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="text-slate-800 bg-slate-50">
+    <main class="flex-grow py-10 min-h-screen">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <!-- Header -->
+                <div class="p-6 md:p-8 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-slate-100">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                        <div>
+                            <h1 class="text-3xl font-bold text-slate-800">Interactive Syllabus Tracker</h1>
+                            <p class="text-slate-500 text-sm mt-1">Your progress is automatically saved to this device.</p>
+                        </div>
+                        
+                        <!-- Master Progress -->
+                        <div class="w-full md:w-1/3">
+                            <div class="flex justify-between text-sm font-semibold mb-2">
+                                <span style="color: var(--defblue-800);">Overall Progress</span>
+                                <span id="overall-progress-text" style="color: var(--defblue-800);">0%</span>
+                            </div>
+                            <div class="w-full bg-slate-200 rounded-full h-3">
+                                <div id="overall-progress-bar" class="h-3 rounded-full transition-all duration-500" style="width: 0%; background-color: var(--defblue-600);"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex gap-3">
+                        <button onclick="resetAllProgress()" class="px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition text-sm font-medium border border-red-200">
+                            <i class="fa-solid fa-arrow-rotate-left mr-2"></i>Reset All
+                        </button>
+                        <button onclick="exportProgress()" class="px-4 py-2 bg-blue-50 text-defblue-600 rounded-lg hover:bg-blue-100 transition text-sm font-medium border border-blue-200" style="color: var(--defblue-600); border-color: var(--defblue-50);">
+                            <i class="fa-solid fa-download mr-2"></i>Export
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="flex border-b border-slate-200">
+                    <button onclick="switchTab('gk')" id="tab-gk" class="syllabus-tab flex-1 py-4 font-semibold text-center text-white border-b-4 transition" style="background-color: var(--defblue-600); border-bottom-color: var(--defblue-600);">
+                        <i class="fa-solid fa-earth-americas mr-2"></i>General Knowledge
+                    </button>
+                    <button onclick="switchTab('eng')" id="tab-eng" class="syllabus-tab flex-1 py-4 font-semibold text-center text-slate-500 border-b-4 border-transparent hover:text-slate-700 transition">
+                        <i class="fa-solid fa-book-open mr-2"></i>English
+                    </button>
+                    <button onclick="switchTab('math')" id="tab-math" class="syllabus-tab flex-1 py-4 font-semibold text-center text-slate-500 border-b-4 border-transparent hover:text-slate-700 transition">
+                        <i class="fa-solid fa-calculator mr-2"></i>Mathematics
+                    </button>
+                </div>
+
+                <!-- Content -->
+                <div id="syllabus-content" class="p-6">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+
+            <!-- Statistics Card -->
+            <div class="mt-8 grid md:grid-cols-3 gap-4">
+                <div class="bg-white border border-slate-200 rounded-xl p-6 text-center">
+                    <i class="fa-solid fa-book text-3xl mb-3" style="color: var(--defblue-600);"></i>
+                    <p class="text-sm text-slate-600 mb-1">Total Topics</p>
+                    <p id="stat-total-topics" class="text-2xl font-bold text-slate-800">0</p>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-xl p-6 text-center">
+                    <i class="fa-solid fa-circle-check text-3xl mb-3" style="color: var(--defolive-600);"></i>
+                    <p class="text-sm text-slate-600 mb-1">Topics Completed</p>
+                    <p id="stat-completed-topics" class="text-2xl font-bold text-slate-800">0</p>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-xl p-6 text-center">
+                    <i class="fa-solid fa-hourglass-half text-3xl mb-3" style="color: #f59e0b;"></i>
+                    <p class="text-sm text-slate-600 mb-1">Remaining</p>
+                    <p id="stat-remaining-topics" class="text-2xl font-bold text-slate-800">0</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Shared Scripts -->
+    <script src="../assets/js/questions.js"></script>
+    <script src="../assets/js/shared.js"></script>
+    
+    <script>
+        // ==========================================
+        // SYLLABUS PAGE LOGIC
+        // ==========================================
+
+        let currentTab = 'gk';
+        let syllabusProgress = Storage.getSyllabusProgress();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            switchTab('gk');
+            updateStatistics();
+        });
+
+        function switchTab(subject) {
+            currentTab = subject;
+            
+            // Update tab styling
+            ['gk', 'eng', 'math'].forEach(tab => {
+                const btn = document.getElementById(`tab-${tab}`);
+                if (tab === subject) {
+                    btn.style.color = 'white';
+                    btn.style.backgroundColor = 'var(--defblue-600)';
+                    btn.style.borderBottomColor = 'var(--defblue-600)';
+                } else {
+                    btn.style.color = 'var(--slate-500)';
+                    btn.style.backgroundColor = 'white';
+                    btn.style.borderBottomColor = 'transparent';
+                }
+            });
+
+            // Render content
+            renderContent(subject);
+        }
+
+        function renderContent(subject) {
+            const container = document.getElementById('syllabus-content');
+            const sections = syllabusData[subject];
+            
+            container.innerHTML = '';
+
+            sections.forEach((section, idx) => {
+                let completedCount = 0;
+                section.topics.forEach(topic => {
+                    const key = `${subject}_${section.id}_${topic}`;
+                    if (syllabusProgress[key]) completedCount++;
+                });
+
+                const isComplete = completedCount === section.topics.length && section.topics.length > 0;
+                const progressPercent = Math.round((completedCount / section.topics.length) * 100);
+
+                const topicsHtml = section.topics.map(topic => {
+                    const key = `${subject}_${section.id}_${topic}`;
+                    const isChecked = syllabusProgress[key] ? 'checked' : '';
+                    return `
+                        <label class="flex items-center space-x-3 p-3 hover:bg-slate-50 rounded-lg cursor-pointer transition border border-transparent hover:border-slate-200">
+                            <input type="checkbox" class="syllabus-checkbox w-5 h-5" onchange="toggleTopic('${key}', this)" ${isChecked} style="accent-color: var(--defblue-900);">
+                            <span class="text-slate-700 font-medium flex-grow ${isChecked ? 'line-through text-slate-400' : ''}">${topic}</span>
+                        </label>
+                    `;
+                }).join('');
+
+                const sectionHTML = `
+                    <div class="mb-4 border border-slate-200 rounded-xl overflow-hidden accordion-item">
+                        <div class="px-6 py-4 cursor-pointer flex justify-between items-center" style="${isComplete ? 'background-color: var(--defolive-100);' : 'background-color: var(--slate-50);'}" onclick="toggleAccordion('acc-${section.id}', this)">
+                            <div class="flex items-center space-x-3 flex-grow">
+                                <i class="fa-solid fa-bookmark" style="color: ${isComplete ? 'var(--defolive-600)' : 'var(--defblue-600)'};"></i>
+                                <h3 class="font-bold text-slate-800">${section.title}</h3>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <span class="text-xs font-semibold px-3 py-1 bg-white rounded-md text-slate-500 border border-slate-200">${completedCount}/${section.topics.length}</span>
+                                <i class="fa-solid fa-chevron-down text-slate-400 accordion-icon" id="icon-acc-${section.id}"></i>
+                            </div>
+                        </div>
+                        <div class="accordion-content ${idx === 0 ? 'active' : ''}" id="acc-${section.id}">
+                            <div class="px-6 py-2 bg-white border-t border-slate-200">
+                                <!-- Progress bar for section -->
+                                <div class="mb-4 pt-2">
+                                    <div class="flex justify-between text-xs mb-1">
+                                        <span class="font-semibold text-slate-600">Section Progress</span>
+                                        <span class="font-semibold" style="color: var(--defblue-600);">${progressPercent}%</span>
+                                    </div>
+                                    <div class="w-full bg-slate-200 rounded-full h-2">
+                                        <div class="h-2 rounded-full transition-all duration-300" style="width: ${progressPercent}%; background-color: var(--defblue-600);"></div>
+                                    </div>
+                                </div>
+                                ${topicsHtml}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                container.innerHTML += sectionHTML;
+            });
+        }
+
+        function toggleAccordion(id, header) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            
+            content.classList.toggle('active');
+            icon.classList.toggle('active');
+        }
+
+        function toggleTopic(key, checkbox) {
+            syllabusProgress[key] = checkbox.checked;
+            Storage.setSyllabusProgress(syllabusProgress);
+            
+            // Visual update
+            const span = checkbox.nextElementSibling;
+            if (checkbox.checked) {
+                span.classList.add('line-through', 'text-slate-400');
+            } else {
+                span.classList.remove('line-through', 'text-slate-400');
+            }
+            
+            // Update display
+            renderContent(currentTab);
+            calculateProgress();
+            updateStatistics();
+        }
+
+        function calculateProgress() {
+            let totalTopics = 0;
+            let completedTopics = 0;
+
+            Object.values(syllabusData).forEach(subject => {
+                subject.forEach(section => {
+                    totalTopics += section.topics.length;
+                });
+            });
+
+            completedTopics = Object.values(syllabusProgress).filter(val => val === true).length;
+            
+            const percentage = totalTopics === 0 ? 0 : Math.round((completedTopics / totalTopics) * 100);
+            
+            document.getElementById('overall-progress-bar').style.width = `${percentage}%`;
+            document.getElementById('overall-progress-text').innerText = `${percentage}%`;
+            
+            if (percentage === 100) {
+                document.getElementById('overall-progress-bar').style.backgroundColor = 'var(--defolive-600)';
+            } else {
+                document.getElementById('overall-progress-bar').style.backgroundColor = 'var(--defblue-600)';
+            }
+        }
+
+        function updateStatistics() {
+            let totalTopics = 0;
+            let completedTopics = 0;
+
+            Object.values(syllabusData).forEach(subject => {
+                subject.forEach(section => {
+                    totalTopics += section.topics.length;
+                });
+            });
+
+            completedTopics = Object.values(syllabusProgress).filter(val => val === true).length;
+
+            document.getElementById('stat-total-topics').innerText = totalTopics;
+            document.getElementById('stat-completed-topics').innerText = completedTopics;
+            document.getElementById('stat-remaining-topics').innerText = totalTopics - completedTopics;
+        }
+
+        function resetAllProgress() {
+            if (confirm('Are you sure? This will reset all your progress.')) {
+                syllabusProgress = {};
+                Storage.setSyllabusProgress(syllabusProgress);
+                renderContent(currentTab);
+                calculateProgress();
+                updateStatistics();
+                showNotification('Progress reset successfully', 'info');
+            }
+        }
+
+        function exportProgress() {
+            const data = {
+                timestamp: new Date().toISOString(),
+                progress: syllabusProgress,
+                version: '1.0'
+            };
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `cds_progress_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showNotification('Progress exported successfully', 'success');
+        }
+
+        // Initialize on load - ensure progress syncs with DOM
+        document.addEventListener('DOMContentLoaded', () => {
+            syllabusProgress = Storage.getSyllabusProgress();
+            renderContent(currentTab);
+            calculateProgress();
+            updateStatistics();
+        });
+        
+        // Fallback for when script loads after DOM is ready
+        calculateProgress();
+    </script>
+</body>
+</html>

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TargetCDS - Home | CDS Preparation Platform</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        defblue: {
+                            50: 'var(--defblue-50)',
+                            600: 'var(--defblue-600)',
+                            800: 'var(--defblue-800)',
+                            900: 'var(--defblue-900)',
+                        },
+                        defolive: {
+                            100: 'var(--defolive-100)',
+                            600: 'var(--defolive-600)',
+                            800: 'var(--defolive-800)',
+                            900: 'var(--defolive-900)',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Page-specific animations */
+        .hero-shine {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(30, 58, 138, 0.15);
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+    <main class="flex-grow">
+        <!-- Hero Section with Countdown -->
+        <section class="relative bg-gradient-to-r from-defblue-900 to-defblue-800 text-white overflow-hidden" style="background: linear-gradient(135deg, var(--defblue-900) 0%, var(--defblue-800) 100%);">
+            <div class="absolute inset-0 opacity-10 bg-[url('https://placehold.co/1920x1080/1e3a8a/ffffff?text=Military+Texture')] bg-cover bg-center"></div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="md:w-1/2">
+                    <h1 class="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
+                        Your Journey to the <span style="color: #fbbf24;">Armed Forces</span> Starts Here
+                    </h1>
+                    <p class="text-lg text-blue-200 mb-8 max-w-lg">
+                        Master the CDS syllabus with interactive tools, mock tests, and real past year questions. Prepare systematically for IMA, INA, AFA, and OTA.
+                    </p>
+                    <!-- <a href="pages/quiz.html" class="inline-block bg-yellow-400 text-defblue-900 font-bold py-3 px-8 rounded-lg hover:bg-yellow-300 transition transform hover:scale-105">
+                        <i class="fa-solid fa-play mr-2"></i>Start Mock Test
+                    </a> -->
+                      <a href="development.html" class="inline-block bg-yellow-400 text-defblue-900 font-bold py-3 px-8 rounded-lg hover:bg-yellow-300 transition transform hover:scale-105">
+                        <i class="fa-solid fa-play mr-2"></i>Start Mock Test
+                    </a>
+                </div>
+                
+                <!-- Countdown Timer -->
+                <div class="md:w-5/12 glass-panel p-6 md:p-8 rounded-2xl shadow-2xl text-center">
+                    <h2 class="text-2xl font-bold text-defblue-900 mb-2">Next CDS Exam Countdown</h2>
+                    <p class="text-sm text-slate-600 mb-6 font-semibold">CDS II 2026 - September 6, 2026</p>
+                    <div class="grid grid-cols-4 gap-2 text-defblue-900">
+                        <div class="bg-blue-50 rounded-lg p-2 md:p-3 border border-blue-100">
+                            <span id="cd-days" class="block text-3xl md:text-4xl font-bold">00</span>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Days</span>
+                        </div>
+                        <div class="bg-blue-50 rounded-lg p-2 md:p-3 border border-blue-100">
+                            <span id="cd-hours" class="block text-3xl md:text-4xl font-bold">00</span>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Hours</span>
+                        </div>
+                        <div class="bg-blue-50 rounded-lg p-2 md:p-3 border border-blue-100">
+                            <span id="cd-mins" class="block text-3xl md:text-4xl font-bold">00</span>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Mins</span>
+                        </div>
+                        <div class="bg-blue-50 rounded-lg p-2 md:p-3 border border-blue-100">
+                            <span id="cd-secs" class="block text-3xl md:text-4xl font-bold">00</span>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Secs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Motivational Quote Section -->
+        <section class="bg-slate-100 py-8 border-b-4" style="border-color: var(--defolive-600);">
+            <div class="max-w-7xl mx-auto px-4 text-center">
+                <p id="quote-text" class="text-lg md:text-2xl font-semibold text-defblue-900 italic">
+                    "Discipline is the soul of an Army." — George Washington
+                </p>
+            </div>
+        </section>
+
+        <!-- Academy Selection -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800">Select Your Target Academy</h2>
+                <p class="mt-2 text-slate-600">Click to view exam patterns, eligibility criteria, and recent cutoff trends.</p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+                <button onclick="selectAcademy('ima')" class="aim-btn feature-card bg-white border-2 border-slate-200 p-5 rounded-xl shadow-sm hover:border-defblue-600 transition" style="--defblue-600: var(--defblue-600);">
+                    <i class="fa-solid fa-crosshairs text-4xl mb-3" style="color: var(--defolive-600);"></i>
+                    <h3 class="font-bold text-lg text-slate-800">IMA</h3>
+                    <p class="text-xs text-slate-500">Indian Military Academy</p>
+                </button>
+                <button onclick="selectAcademy('ina')" class="aim-btn feature-card bg-white border-2 border-slate-200 p-5 rounded-xl shadow-sm hover:border-defblue-600 transition">
+                    <i class="fa-solid fa-anchor text-4xl mb-3 text-blue-600"></i>
+                    <h3 class="font-bold text-lg text-slate-800">INA</h3>
+                    <p class="text-xs text-slate-500">Indian Naval Academy</p>
+                </button>
+                <button onclick="selectAcademy('afa')" class="aim-btn feature-card bg-white border-2 border-slate-200 p-5 rounded-xl shadow-sm hover:border-defblue-600 transition">
+                    <i class="fa-solid fa-plane text-4xl mb-3 text-sky-500"></i>
+                    <h3 class="font-bold text-lg text-slate-800">AFA</h3>
+                    <p class="text-xs text-slate-500">Air Force Academy</p>
+                </button>
+                <button onclick="selectAcademy('ota')" class="aim-btn feature-card bg-white border-2 border-slate-200 p-5 rounded-xl shadow-sm hover:border-defblue-600 transition">
+                    <i class="fa-solid fa-star text-4xl mb-3 text-yellow-500"></i>
+                    <h3 class="font-bold text-lg text-slate-800">OTA</h3>
+                    <p class="text-xs text-slate-500">Officers Training Academy</p>
+                </button>
+            </div>
+
+            <div id="aim-info-card" class="bg-white rounded-xl shadow-md border border-slate-200 p-6 hidden fade-in">
+                <!-- Injected via JS -->
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="bg-slate-50 py-16 border-t border-slate-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-slate-800">Platform Features</h2>
+                    <p class="mt-2 text-slate-600">Everything you need to ace the CDS examination</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="feature-card bg-white p-8 rounded-xl shadow-sm border border-slate-200 text-center">
+                        <i class="fa-solid fa-book-open text-4xl mb-4" style="color: var(--defblue-600);"></i>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">Interactive Syllabus</h3>
+                        <p class="text-slate-600 text-sm">Track your progress with our detailed syllabus checklist. Your progress is saved locally.</p>
+                    </div>
+
+                    <div class="feature-card bg-white p-8 rounded-xl shadow-sm border border-slate-200 text-center">
+                        <i class="fa-solid fa-stopwatch text-4xl mb-4" style="color: var(--defolive-600);"></i>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">Mock Tests</h3>
+                        <p class="text-slate-600 text-sm">Take real exam-like tests with exact UPSC marking schemes and instant feedback.</p>
+                    </div>
+
+                    <div class="feature-card bg-white p-8 rounded-xl shadow-sm border border-slate-200 text-center">
+                        <i class="fa-solid fa-scale-balanced text-4xl mb-4 text-red-600"></i>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">Eligibility Check</h3>
+                        <p class="text-slate-600 text-sm">Get instant eligibility reports based on UPSC age and educational criteria.</p>
+                    </div>
+
+                    <div class="feature-card bg-white p-8 rounded-xl shadow-sm border border-slate-200 text-center">
+                        <i class="fa-solid fa-file-pdf text-4xl mb-4 text-blue-600"></i>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">PYQ Archive</h3>
+                        <p class="text-slate-600 text-sm">Access past 5 years of CDS question papers with detailed solutions.</p>
+                    </div>
+
+                    <div class="feature-card bg-white p-8 rounded-xl shadow-sm border border-slate-200 text-center">
+                        <i class="fa-solid fa-chart-line text-4xl mb-4 text-green-600"></i>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">Performance Analytics</h3>
+                        <p class="text-slate-600 text-sm">Track your quiz scores and identify weak areas for targeted improvement.</p>
+                    </div>
+
+                    <div class="feature-card bg-white p-8 rounded-xl shadow-sm border border-slate-200 text-center">
+                        <i class="fa-solid fa-bolt text-4xl mb-4 text-yellow-600"></i>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">Quick Tips</h3>
+                        <p class="text-slate-600 text-sm">Access math shortcuts, English idioms, and polity mnemonics instantly.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="bg-gradient-to-r from-defblue-900 to-defblue-800 text-white py-12" style="background: linear-gradient(135deg, var(--defblue-900) 0%, var(--defblue-800) 100%);">
+            <div class="max-w-4xl mx-auto px-4 text-center">
+                <h2 class="text-3xl font-bold mb-4">Ready to Start Your Journey?</h2>
+                <p class="text-blue-200 mb-8 text-lg">Join thousands of CDS aspirants preparing with TargetCDS</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="pages/syllabus.html" class="bg-yellow-400 text-defblue-900 font-bold py-3 px-8 rounded-lg hover:bg-yellow-300 transition transform hover:scale-105 inline-block">
+                        <i class="fa-solid fa-list mr-2"></i>View Syllabus
+                    </a>
+                    <!-- <a href="pages/quiz.html" class="bg-white text-defblue-900 font-bold py-3 px-8 rounded-lg hover:bg-slate-100 transition transform hover:scale-105 inline-block">
+                        <i class="fa-solid fa-play mr-2"></i>Start Quiz
+                    </a> -->
+                    <a href="development.html" class="bg-white text-defblue-900 font-bold py-3 px-8 rounded-lg hover:bg-slate-100 transition transform hover:scale-105 inline-block">
+                        <i class="fa-solid fa-play mr-2"></i>Start Mock Test
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Shared Scripts -->
+    <script src="assets/js/questions.js"></script>
+    <script src="assets/js/shared.js"></script>
+    
+    <script>
+        // ==========================================
+        // HOME PAGE SPECIFIC LOGIC
+        // ==========================================
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Countdown Timer
+            const targetDate = cdsConfig.nextExam.date;
+            startCountdown(targetDate, {
+                onTick: (time) => {
+                    document.getElementById('cd-days').innerText = time.days.toString().padStart(2, '0');
+                    document.getElementById('cd-hours').innerText = time.hours.toString().padStart(2, '0');
+                    document.getElementById('cd-mins').innerText = time.minutes.toString().padStart(2, '0');
+                    document.getElementById('cd-secs').innerText = time.seconds.toString().padStart(2, '0');
+                }
+            });
+
+            // Quotes Rotation
+            const quotes = [
+                "Discipline is the soul of an Army. — George Washington",
+                "Service Before Self. — Armed Forces Motto",
+                "Do you have it in you? — Dedicated to Aspiring Officers",
+                "Some goals are so worthy, it's glorious even to fail. — Edmund Burke",
+                "Valor is stability, not of legs and arms, but of courage and the soul. — Michel de Montaigne",
+                "The strength of the nation lies in the loyalty of her citizens. — Armed Forces",
+                "Excellence is not a destination; it is a continuous journey. — CDS Preparation"
+            ];
+            
+            let qIdx = 0;
+            setInterval(() => {
+                qIdx = (qIdx + 1) % quotes.length;
+                const qText = document.getElementById('quote-text');
+                qText.style.opacity = 0;
+                setTimeout(() => {
+                    qText.innerText = `"${quotes[qIdx]}"`;
+                    qText.style.opacity = 1;
+                    qText.style.transition = 'opacity 0.5s ease';
+                }, 300);
+            }, 6000);
+        });
+
+        function selectAcademy(academy) {
+            const infoCard = document.getElementById('aim-info-card');
+            const data = cdsConfig.academies[academy];
+            
+            // Reset and highlight
+            document.querySelectorAll('.aim-btn').forEach(btn => {
+                btn.classList.remove('border-defblue-600', 'bg-blue-50');
+                btn.classList.add('border-slate-200', 'bg-white');
+            });
+            event.target.closest('button').classList.add('border-defblue-600', 'bg-blue-50');
+
+            infoCard.innerHTML = `
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="flex-grow">
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4">${data.name}</h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-sm font-semibold text-slate-600 mb-1"><i class="fa-solid fa-location-dot mr-2" style="color: var(--defblue-600);"></i>Location</p>
+                                <p class="text-slate-800 font-bold">${data.location}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-slate-600 mb-1"><i class="fa-solid fa-file-lines mr-2" style="color: var(--defblue-600);"></i>Papers</p>
+                                <p class="text-slate-800 font-bold">${data.papers}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-slate-600 mb-1"><i class="fa-solid fa-calendar mr-2" style="color: var(--defblue-600);"></i>Age Limit</p>
+                                <p class="text-slate-800 font-bold">${data.ageLimit}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-slate-600 mb-1"><i class="fa-solid fa-users mr-2" style="color: var(--defblue-600);"></i>Eligibility</p>
+                                <p class="text-slate-800 font-bold">${data.eligibility}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-slate-600 mb-1"><i class="fa-solid fa-clock mr-2" style="color: var(--defblue-600);"></i>Duration</p>
+                                <p class="text-slate-800 font-bold">${data.duration}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-slate-600 mb-1"><i class="fa-solid fa-briefcase mr-2" style="color: var(--defblue-600);"></i>Vacancies</p>
+                                <p class="text-slate-800 font-bold">~${data.positionCount} positions</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-red-50 p-6 rounded-lg border-2 border-red-100 text-center min-w-[250px]">
+                        <p class="text-xs text-red-700 font-bold uppercase tracking-wider mb-2">Estimated Safe Cutoff</p>
+                        <p class="text-3xl font-bold text-red-600">${data.estimatedCutoff}</p>
+                        <p class="text-xs text-red-600 mt-2">(Based on 2023-2025 Trends)</p>
+                    </div>
+                </div>
+            `;
+            infoCard.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
